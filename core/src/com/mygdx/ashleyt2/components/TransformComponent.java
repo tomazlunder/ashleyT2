@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 public class TransformComponent implements Component {
+    //PIXEL WORLD coordinates
     public Vector3 position;
     public Vector3 oldPosition;
 

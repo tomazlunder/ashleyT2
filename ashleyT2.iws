@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6d438ca3-8cde-4296-a4ec-1bbc5beaac4b" name="Default" comment="" />
+    <list default="true" id="6d438ca3-8cde-4296-a4ec-1bbc5beaac4b" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/ashleyT2.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ashleyT2.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -88,11 +91,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-419">
-              <caret line="32" column="25" lean-forward="true" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+            <state relative-caret-position="-215">
+              <caret line="80" column="47" lean-forward="true" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3350#3351#0" expanded="true" />
@@ -150,11 +153,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TransformComponent.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TransformComponent.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
-              <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
+              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
               <folding>
                 <element signature="e#617#618#0" expanded="true" />
                 <element signature="e#687#688#0" expanded="true" />
@@ -181,10 +184,12 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" />
         <option value="$PROJECT_DIR$/desktop/src/com/mygdx/ashleyt2/desktop/DesktopLauncher.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/B2dBodyComponent.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/RenderableComponent.java" />
@@ -194,6 +199,7 @@
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/PositionUtils.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" />
       </list>
     </option>
   </component>
@@ -221,6 +227,7 @@
       <profile-state />
     </entry>
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectReloadState">
     <option name="STATE" value="0" />
   </component>
@@ -406,12 +413,12 @@
       <workItem from="1551797560611" duration="5279000" />
       <workItem from="1551865837599" duration="599000" />
       <workItem from="1552472651100" duration="1695000" />
-      <workItem from="1552474354796" duration="2202000" />
+      <workItem from="1552474354796" duration="2642000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9775000" />
+    <option name="totallyTimeSpent" value="10215000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -427,7 +434,7 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32946146" />
-      <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -741,17 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding>
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
@@ -794,12 +790,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-419">
-          <caret line="32" column="25" lean-forward="true" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+        <state relative-caret-position="-215">
+          <caret line="80" column="47" lean-forward="true" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3350#3351#0" expanded="true" />
             <element signature="e#3441#3442#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+          <folding>
+            <element signature="e#617#618#0" expanded="true" />
+            <element signature="e#687#688#0" expanded="true" />
           </folding>
         </state>
       </provider>
