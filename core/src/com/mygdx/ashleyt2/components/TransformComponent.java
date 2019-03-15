@@ -21,7 +21,11 @@ public class TransformComponent implements Component {
     }
 
     public TransformComponent(Vector3 position){
-        new TransformComponent(position, new Vector2(1,1), 0f);
+        this.position = position.cpy();
+        this.oldPosition = position.cpy();
+
+        this.scale = new Vector2(1f,1f);
+        this.rotation = 0;
     }
 
 

@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6d438ca3-8cde-4296-a4ec-1bbc5beaac4b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/ashleyT2.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/ashleyT2.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ashleyT2.iws" beforeDir="false" afterPath="$PROJECT_DIR$/ashleyT2.iws" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -61,55 +63,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="DesktopLauncher.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/desktop/src/com/mygdx/ashleyt2/desktop/DesktopLauncher.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GameClass.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/GameClass.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainMenuScreen.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/MainMenuScreen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="9" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="GameScreen.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-215">
-              <caret line="80" column="47" lean-forward="true" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3350#3351#0" expanded="true" />
-                <element signature="e#3441#3442#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PositionUtils.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/PositionUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="442">
+              <caret line="161" column="42" selection-start-line="161" selection-start-column="42" selection-end-line="161" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -117,11 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="B2dRenderSystem.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java">
+      <file leaf-file-name="PlayerControlSystem.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/PlayerControlSystem.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="465">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -129,14 +87,53 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TextureComponent.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java">
+      <file leaf-file-name="InputHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/InputHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+            <state relative-caret-position="119">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminInputState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/states/AdminInputState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerInputState.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/states/PlayerInputState.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="32" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="12" selection-end-column="32" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Input.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/Input.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="49">
+              <caret line="67" column="24" selection-start-line="67" selection-start-column="24" selection-end-line="67" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerComponent.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/PlayerComponent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="30" lean-forward="true" selection-start-column="30" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -153,24 +150,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TransformComponent.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TransformComponent.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
-              <folding>
-                <element signature="e#617#618#0" expanded="true" />
-                <element signature="e#687#688#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vector3.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/math/Vector3.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
+            <state relative-caret-position="408">
+              <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -195,11 +179,20 @@
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/RenderableComponent.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/GameClass.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/MainMenuScreen.java" />
-        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java" />
-        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/PositionUtils.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dPhysicsSystem.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/NameComponent.java" />
         <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/RawInputHandler.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/PlayerInputState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/AdminInputState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/InputHandler.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/states/PlayerInputState.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/PlayerComponent.java" />
+        <option value="$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/PlayerControlSystem.java" />
       </list>
     </option>
   </component>
@@ -217,10 +210,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
+    <option name="x" value="-265" />
     <option name="y" value="-8" />
-    <option name="width" value="1936" />
-    <option name="height" value="1056" />
+    <option name="width" value="1694" />
+    <option name="height" value="1026" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -236,8 +229,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -277,6 +268,23 @@
               <item name="core" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="ashleyt2" type="462c0819:PsiDirectoryNode" />
+              <item name="input" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ashleyT2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ashleyT2" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ashleyt2" type="462c0819:PsiDirectoryNode" />
+              <item name="input" type="462c0819:PsiDirectoryNode" />
+              <item name="states" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ashleyT2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ashleyT2" type="462c0819:PsiDirectoryNode" />
+              <item name="core" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="ashleyt2" type="462c0819:PsiDirectoryNode" />
               <item name="screens" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -292,11 +300,26 @@
               <item name="ashleyT2" type="462c0819:PsiDirectoryNode" />
               <item name="desktop" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ashleyT2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ashleyT2" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ashleyT2" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ashleyT2" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -413,12 +436,13 @@
       <workItem from="1551797560611" duration="5279000" />
       <workItem from="1551865837599" duration="599000" />
       <workItem from="1552472651100" duration="1695000" />
-      <workItem from="1552474354796" duration="2642000" />
+      <workItem from="1552474354796" duration="2672000" />
+      <workItem from="1552657338551" duration="15332000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10215000" />
+    <option name="totallyTimeSpent" value="25577000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -470,14 +494,74 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java</url>
-          <line>69</line>
+          <line>102</line>
           <properties />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dPhysicsSystem.java</url>
+          <line>59</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dPhysicsSystem.java</url>
+          <line>53</line>
+          <properties />
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java</url>
+          <line>62</line>
+          <properties />
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java</url>
+          <line>15</line>
+          <properties />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java</url>
+          <line>65</line>
+          <properties />
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="1" />
+      <option name="time" value="8" />
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((Array)((B2dPhysicsSystem)this).bodiesQueue).items" custom="com.mygdx.ashleyt2.systems.B2dPhysicsSystem,com.badlogic.gdx.utils.Array" />
+        <watch expression="((Object[])((Array)((B2dPhysicsSystem)this).bodiesQueue).items)[0]" custom="java.lang.Object[],com.mygdx.ashleyt2.systems.B2dPhysicsSystem,com.badlogic.gdx.utils.Array" />
+        <watch expression="((Object[])((Array)((Body)((B2dBodyComponent)((Object[])((Bag)((Entity)((Object[])((Array)((B2dPhysicsSystem)this).bodiesQueue).items)[1]).components).data)[0]).body).fixtures).items)[0]" custom="com.mygdx.ashleyt2.systems.B2dPhysicsSystem,com.badlogic.gdx.physics.box2d.Body,com.badlogic.gdx.utils.Array,com.badlogic.ashley.core.Entity,java.lang.Object[],com.mygdx.ashleyt2.components.B2dBodyComponent,com.badlogic.ashley.utils.Bag" />
+        <watch expression="entity1" language="JAVA" />
+        <watch expression="entity" language="JAVA" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="watch">
+      <expression>
+        <expression-string>entity</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>entity1</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/desktop/src/com/mygdx/ashleyt2/desktop/DesktopLauncher.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -536,10 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding>
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -556,8 +636,6 @@
           <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3350#3351#0" expanded="true" />
-            <element signature="e#3441#3442#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -610,10 +688,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding>
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -630,8 +704,6 @@
           <caret line="46" column="61" selection-start-line="46" selection-start-column="61" selection-end-line="55" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3350#3351#0" expanded="true" />
-            <element signature="e#3441#3442#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -684,10 +756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="7" column="14" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="14" />
-          <folding>
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -704,8 +772,6 @@
           <caret line="46" column="61" lean-forward="true" selection-start-line="46" selection-start-column="61" selection-end-line="55" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3350#3351#0" expanded="true" />
-            <element signature="e#3441#3442#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -724,12 +790,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/B2dBodyComponent.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/PositionUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="10" selection-end-column="5" />
+        <state relative-caret-position="153">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.9/9b11e9ddbd49e416b37396451965412ca03021bc/gdx-box2d-1.9.9-sources.jar!/com/badlogic/gdx/physics/box2d/CircleShape.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-219">
+          <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
+          <folding>
+            <element signature="e#1794#1795#0" expanded="true" />
+            <element signature="e#1845#1846#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/graphics/g2d/SpriteBatch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="183" selection-start-line="183" selection-end-line="183" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/graphics/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="43" column="25" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/MainMenuScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/NameComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
+          <folding>
+            <element signature="e#193#194#0" expanded="true" />
+            <element signature="e#225#226#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/GameClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+          <folding>
+            <element signature="e#717#718#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/Game.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+          <folding>
+            <element signature="e#1453#1454#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -741,72 +893,109 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/GameClass.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-box2d/1.9.9/9b11e9ddbd49e416b37396451965412ca03021bc/gdx-box2d-1.9.9-sources.jar!/com/badlogic/gdx/physics/box2d/PolygonShape.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="17" column="27" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TextureComponent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
+        <state relative-caret-position="202">
+          <caret line="83" column="16" selection-start-line="83" selection-start-column="16" selection-end-line="83" selection-end-column="16" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#2872#2873#0" expanded="true" />
+            <element signature="e#2904#2905#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dRenderSystem.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/B2dPhysicsSystem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="289">
+          <caret line="53" selection-start-line="53" selection-end-line="53" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2224#2254#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/MainMenuScreen.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/RawInputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="39" selection-start-line="39" selection-end-line="42" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="68">
+          <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/PositionUtils.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.9/1409aca6a4293a7ca8dbd60281c3211a195dd39a/gdx-1.9.9-sources.jar!/com/badlogic/gdx/Input.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="49">
+          <caret line="67" column="24" selection-start-line="67" selection-start-column="24" selection-end-line="67" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/states/AdminInputState.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-215">
-          <caret line="80" column="47" lean-forward="true" selection-start-line="80" selection-start-column="47" selection-end-line="80" selection-end-column="47" />
+        <state relative-caret-position="323">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/InputHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#3350#3351#0" expanded="true" />
-            <element signature="e#3441#3442#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/TransformComponent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+        <state relative-caret-position="408">
+          <caret line="26" column="39" selection-start-line="26" selection-start-column="39" selection-end-line="26" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/screens/GameScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="161" column="42" selection-start-line="161" selection-start-column="42" selection-end-line="161" selection-end-column="42" />
           <folding>
-            <element signature="e#617#618#0" expanded="true" />
-            <element signature="e#687#688#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/B2dBodyComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="4" selection-start-line="8" selection-start-column="4" selection-end-line="10" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/input/states/PlayerInputState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="32" lean-forward="true" selection-start-line="7" selection-start-column="4" selection-end-line="12" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/components/PlayerComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="30" lean-forward="true" selection-start-column="30" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/mygdx/ashleyt2/systems/PlayerControlSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

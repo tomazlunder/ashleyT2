@@ -11,10 +11,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.GameClass;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
+import com.mygdx.ashleyt2.components.NameComponent;
+import com.mygdx.ashleyt2.components.PlayerComponent;
 import com.mygdx.ashleyt2.components.TransformComponent;
+import com.mygdx.ashleyt2.input.InputHandler;
+import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.B2dRenderSystem;
+import com.mygdx.ashleyt2.systems.PlayerControlSystem;
 
 public class GameScreen implements Screen {
+    //NEEDED FOR EVERY (BOX2D) GAME
     final GameClass game;
 
     Engine engine;
@@ -22,26 +28,52 @@ public class GameScreen implements Screen {
 
     Vector2 gravity = new Vector2(0f,-9.8f);
 
-    private final int PIXELS_PER_METER = 100;
-    private float PIXELS_TO_METERS = 1.0f/(float) PIXELS_PER_METER;
+    private int pixels_per_meter;
+    private float pixels_to_meters;
 
     Box2DDebugRenderer debugRenderer;
 
     OrthographicCamera camera;
 
+    //GAME SPECIFIC
+    private final float WORLD_WIDTH = 32.0f;
+    private final float WORLD_HEIGHT = 18.0f;
+
+
     public GameScreen(final GameClass game) {
         this.game = game;
 
+        this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/WORLD_WIDTH);
+        this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
+
+
         this.engine = new Engine();
         world = new World(gravity, true);
-        debugRenderer = new Box2DDebugRenderer();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        engine.addSystem(new B2dRenderSystem(world,camera));
 
-        createPlayer(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+        engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
+        engine.addSystem(new B2dPhysicsSystem(world, pixels_per_meter));
+        engine.addSystem(new PlayerControlSystem());
+
+        float edgeWidth = 1f;
+        //top edge
+        createPlatform(WORLD_WIDTH/2, WORLD_HEIGHT-(edgeWidth/2),WORLD_WIDTH,edgeWidth);
+
+        //bottom edge
+        createPlatform(WORLD_WIDTH/2, edgeWidth/2, WORLD_WIDTH, edgeWidth);
+
+        //left edge
+        createPlatform(edgeWidth/2, WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
+
+        //right edge
+        createPlatform(WORLD_WIDTH-(edgeWidth/2), WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
+
+        //"player"
+        createBall(WORLD_WIDTH/2, WORLD_HEIGHT/2);
+
     }
 
 
@@ -57,24 +89,25 @@ public class GameScreen implements Screen {
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-
         game.batch.begin();
         game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
+        game.batch.end();
 
+        /*
         if (Gdx.input.isTouched()) {
             float x = Gdx.input.getX();
             float y = Gdx.input.getY();
 
-            Vector3 mousePos = getMousePosInGameWorld();
+            Vector2 mousePos = getMousePosInGameWorld();
 
-            createPlayer(mousePos.x,mousePos.y);
-            System.out.printf("(Screen) [%f,%f] (Gdx.input.get()) - (Camera world) [%f,%f] - (Box world) [%f,%f]\n",x, y, mousePos.x, mousePos.y, x*PIXELS_TO_METERS, y*PIXELS_TO_METERS);
+            createBall(mousePos.x, mousePos.y);
+            System.out.printf("(Screen) [%f,%f] (Gdx.input.get()) - (Camera world) [%f,%f] - (Box world) [%f,%f]\n",x, y, mousePos.x, mousePos.y, x*pixels_to_meters, y*pixels_to_meters);
         }
+        */
 
-
+        InputHandler.updateStates();
         engine.update(delta);
 
-        game.batch.end();
     }
 
     @Override
@@ -102,19 +135,18 @@ public class GameScreen implements Screen {
 
     }
 
-    public void createPlayer(float x, float y){
+    public void createBall(float x, float y){
         Entity entity = new Entity();
-        //Transform component
-        Vector3 position = new Vector3(x,y,1);
-        entity.add(new TransformComponent(position));
+        //Transform component (transform positions into world coordinates)
+        Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
         //Box2d component
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x,y);
 
         Body body = world.createBody(bodyDef);
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(1000*PIXELS_TO_METERS,1000*PIXELS_TO_METERS);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(0.5f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -124,13 +156,49 @@ public class GameScreen implements Screen {
 
         body.createFixture(shape,0);
 
-        entity.add(new B2dBodyComponent(body));
+        entity.add(new TransformComponent(position))
+                .add(new B2dBodyComponent(body))
+                .add(new NameComponent("ball"))
+                .add(new PlayerComponent());
 
+
+        //Add to engine
         engine.addEntity(entity);
     }
 
-    Vector3 getMousePosInGameWorld() {
-        return camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+    public void createPlatform(float x, float y, float w, float h){
+        Entity entity = new Entity();
+
+        //Transform component (transform positions into world coordinates)
+        Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
+
+        //Box2d component
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(x,y);
+
+        Body body = world.createBody(bodyDef);
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(w/2,h/2);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1;
+        fixtureDef.friction = 0.3f;
+        body.createFixture(fixtureDef);
+
+        body.createFixture(shape,0);
+
+        entity.add(new TransformComponent(position))
+                .add(new B2dBodyComponent(body))
+                .add(new NameComponent("platform"));
+        //Add to engine
+        engine.addEntity(entity);
+    }
+
+
+    Vector2 getMousePosInGameWorld() {
+        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
     }
 
 }
