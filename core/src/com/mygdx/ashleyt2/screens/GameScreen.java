@@ -48,6 +48,7 @@ public class GameScreen implements Screen {
 
         this.engine = new Engine();
         world = new World(gravity, true);
+        //world.setContinuousPhysics(true);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -57,22 +58,7 @@ public class GameScreen implements Screen {
         engine.addSystem(new B2dPhysicsSystem(world, pixels_per_meter));
         engine.addSystem(new PlayerControlSystem());
 
-        float edgeWidth = 1f;
-        //top edge
-        createPlatform(WORLD_WIDTH/2, WORLD_HEIGHT-(edgeWidth/2),WORLD_WIDTH,edgeWidth);
-
-        //bottom edge
-        createPlatform(WORLD_WIDTH/2, edgeWidth/2, WORLD_WIDTH, edgeWidth);
-
-        //left edge
-        createPlatform(edgeWidth/2, WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
-
-        //right edge
-        createPlatform(WORLD_WIDTH-(edgeWidth/2), WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
-
-        //"player"
-        createBall(WORLD_WIDTH/2, WORLD_HEIGHT/2);
-
+        createLevel();
     }
 
 
@@ -134,7 +120,25 @@ public class GameScreen implements Screen {
 
     }
 
-    public void createBall(float x, float y){
+    public void createLevel(){
+        float edgeWidth = 1f;
+        //top edge
+        createPlatform(WORLD_WIDTH/2, WORLD_HEIGHT-(edgeWidth/2),WORLD_WIDTH,edgeWidth);
+
+        //bottom edge
+        createPlatform(WORLD_WIDTH/2, edgeWidth/2, WORLD_WIDTH, edgeWidth);
+
+        //left edge
+        createPlatform(edgeWidth/2, WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
+
+        //right edge
+        createPlatform(WORLD_WIDTH-(edgeWidth/2), WORLD_HEIGHT/2, edgeWidth, WORLD_HEIGHT-(edgeWidth*2));
+
+        //"player"
+        createPlayer(WORLD_WIDTH/2, WORLD_HEIGHT/2);
+    }
+
+    public void createPlayer(float x, float y){
         Entity entity = new Entity();
         //Transform component (transform positions into world coordinates)
         Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
@@ -165,8 +169,7 @@ public class GameScreen implements Screen {
         entity.add(new TransformComponent(position))
                 .add(new B2dBodyComponent(body))
                 .add(new NameComponent("ball"))
-                .add(new PlayerComponent())
-                .add(new MovementComponent(0.5f, 1f, 5, 7f, 0.03f));
+                .add(new PlayerComponent(0.5f, 1f, 5, 9f, 0.01f));
 
 
         //Add to engine

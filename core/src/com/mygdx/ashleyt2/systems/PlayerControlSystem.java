@@ -6,8 +6,8 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
-import com.mygdx.ashleyt2.components.MovementComponent;
 import com.mygdx.ashleyt2.components.PlayerComponent;
 import com.mygdx.ashleyt2.input.InputHandler;
 
@@ -17,9 +17,8 @@ public class PlayerControlSystem extends EntitySystem {
 
     private ComponentMapper<PlayerComponent> pm = ComponentMapper.getFor(PlayerComponent.class);
     private ComponentMapper<B2dBodyComponent> vm = ComponentMapper.getFor(B2dBodyComponent.class);
-    private ComponentMapper<MovementComponent> mm = ComponentMapper.getFor(MovementComponent.class);
 
-    private float bulletSpeed = 30f;
+    private float bulletSpeed = 60f;
 
 
     //Constants
@@ -31,7 +30,7 @@ public class PlayerControlSystem extends EntitySystem {
 
     @Override
     public void addedToEngine(Engine engine) {
-        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, B2dBodyComponent.class, MovementComponent.class).get());
+        entities = engine.getEntitiesFor(Family.all(PlayerComponent.class, B2dBodyComponent.class).get());
     }
 
     @Override
@@ -41,120 +40,144 @@ public class PlayerControlSystem extends EntitySystem {
 
             PlayerComponent playerComponent = pm.get(e);
             B2dBodyComponent bodyComponent = vm.get(e);
-            MovementComponent movementComponent = mm.get(e);
-
-
-            if(playerComponent.playerState == PlayerComponent.PlayerState.BULLET) bulletHandler(deltaTime, playerComponent,bodyComponent,movementComponent);
 
 
             if(playerComponent.playerState == PlayerComponent.PlayerState.AIR){
-                if(movementComponent.prevB2dVelocity.y < 0 && bodyComponent.body.getLinearVelocity().y > 0){
+                //AIR TO GROUNDED
+                if((playerComponent.prevB2dVelocity.y < 0 && bodyComponent.body.getLinearVelocity().y > 0)
+                        || bodyComponent.body.getLinearVelocity().y == 0)
+                {
+                    playerComponent.prevPlayerState = playerComponent.playerState;
                     playerComponent.playerState = PlayerComponent.PlayerState.GROUNDED;
-                    bodyComponent.body.setLinearVelocity(0,0);
+                    bodyComponent.body.setLinearVelocity(bodyComponent.body.getLinearVelocity().x,0);
                 }
 
-                else if(bodyComponent.body.getLinearVelocity().y == 0){
-                    playerComponent.playerState = PlayerComponent.PlayerState.GROUNDED;
-                }
-
-                //INTO BULLET MODE YARR
-                else if(!InputHandler.prevPlayerInputState.jumpPressed && InputHandler.playerInputState.jumpPressed){
+                //AIR INTO BULLET
+                else if(playerComponent.prevPlayerState != PlayerComponent.PlayerState.BULLET && !InputHandler.prevPlayerInputState.jumpPressed && InputHandler.playerInputState.jumpPressed){
+                    playerComponent.prevPlayerState = playerComponent.playerState;
                     playerComponent.playerState = PlayerComponent.PlayerState.BULLET;
-                    bodyComponent.body.setGravityScale(0);
 
-                    bodyComponent.body.getFixtureList().get(0).setRestitution(10);
+                    Fixture f = bodyComponent.body.getFixtureList().get(0);
+
+                    playerComponent.prevRestitution = f.getRestitution();
+                    playerComponent.prevFriction = f.getFriction();
+
+                    f.setRestitution(1f);
+                    f.setFriction(0f);
+                    //f.getShape().setRadius(0.1f);
+
+                    bodyComponent.body.setGravityScale(0);
+                    bodyComponent.body.setBullet(true);
 
                     Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
                     velocity.setLength(bulletSpeed);
 
                     bodyComponent.body.setLinearVelocity(velocity);
 
-                    //movementComponent.hasBounced = true; //TODO: Fix this
                 }
             }
 
+            if(playerComponent.playerState == PlayerComponent.PlayerState.GROUNDED && bodyComponent.body.getLinearVelocity().y != 0){
+                playerComponent.prevPlayerState = playerComponent.playerState;
+                playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+            }
 
-            //Handle reactions to inputs based on player state
-            if(playerComponent.playerState == PlayerComponent.PlayerState.GROUNDED) groundedHandler(deltaTime, playerComponent,bodyComponent,movementComponent);
-            if(playerComponent.playerState == PlayerComponent.PlayerState.AIR) airHandler(deltaTime, playerComponent,bodyComponent,movementComponent);
 
 
-            movementComponent.prevB2dVelocity = bodyComponent.body.getLinearVelocity();
+                //Handle reactions to inputs based on player state
+
+
+            if(playerComponent.playerState == PlayerComponent.PlayerState.BULLET) bulletHandler(deltaTime, playerComponent,bodyComponent);
+            if(playerComponent.playerState == PlayerComponent.PlayerState.GROUNDED) groundedHandler(deltaTime, playerComponent,bodyComponent);
+            if(playerComponent.playerState == PlayerComponent.PlayerState.AIR) airHandler(deltaTime, playerComponent,bodyComponent);
+
+
+            playerComponent.prevB2dVelocity = bodyComponent.body.getLinearVelocity();
         }
     }
 
     //
-    private void groundedHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent, MovementComponent movementComponent){
+    private void groundedHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
 
 
 
-        Vector2 velocity = new Vector2(movementComponent.velocity);
-        velocity.limit(movementComponent.maxHorizontalSpeed);
+        Vector2 velocity = new Vector2(playerComponent.velocity);
+        velocity.limit(playerComponent.maxHorizontalSpeed);
 
         if(InputHandler.playerInputState.leftPressed && !InputHandler.playerInputState.rightPressed){
-            movementComponent.velocity.x -= movementComponent.horizontalAcceleration;
+            playerComponent.velocity.x -= playerComponent.horizontalAcceleration;
 
             if(velocity.x <= 0){
-                velocity.x -= movementComponent.horizontalAcceleration;
+                velocity.x -= playerComponent.horizontalAcceleration;
             }
             else {
-                velocity.x += movementComponent.horizontalDeceleration;
+                velocity.x += playerComponent.horizontalDeceleration;
                 velocity.x = Math.min(velocity.x, 0);
             }
         }
         else if(!InputHandler.playerInputState.leftPressed && InputHandler.playerInputState.rightPressed){
-            movementComponent.velocity.x -= movementComponent.horizontalAcceleration;
+            playerComponent.velocity.x -= playerComponent.horizontalAcceleration;
 
             if(velocity.x >= 0){
-                velocity.x += movementComponent.horizontalAcceleration;
+                velocity.x += playerComponent.horizontalAcceleration;
             }
             else {
-                velocity.x -= movementComponent.horizontalDeceleration;
+                velocity.x -= playerComponent.horizontalDeceleration;
                 velocity.x = Math.max(velocity.x, 0);
             }
         }
         //If none of movement keys is pressed (or both)
         else {
             if(velocity.x > 0){
-                velocity.x = Math.max(velocity.x - movementComponent.horizontalDeceleration, 0);
+                velocity.x = Math.max(velocity.x - playerComponent.horizontalDeceleration, 0);
             }
             else if (velocity.x < 0){
-                velocity.x = Math.min(velocity.x + movementComponent.horizontalDeceleration, 0);
+                velocity.x = Math.min(velocity.x + playerComponent.horizontalDeceleration, 0);
             }
         }
 
         if(InputHandler.playerInputState.jumpPressed){
-            velocity.y = movementComponent.jump_speed;
+            velocity.y = playerComponent.jump_speed;
             playerComponent.playerState = PlayerComponent.PlayerState.AIR;
             bodyComponent.body.setLinearVelocity(velocity);
-            movementComponent.velocity.set(0,0);
+            playerComponent.velocity.set(0,0);
             return;
         }
 
         bodyComponent.body.setLinearVelocity(velocity);
-        movementComponent.velocity = new Vector2(velocity);
+        playerComponent.velocity = new Vector2(velocity);
     }
 
-    private void airHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent, MovementComponent movementComponent){
+    private void airHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
         if(velocity.x > 0){
-            velocity.x = Math.max(0, velocity.x - movementComponent.inAirHorizontalDeceleration);
+            velocity.x = Math.max(0, velocity.x - playerComponent.inAirHorizontalDeceleration);
         }
         if(velocity.x < 0){
-            velocity.x = Math.min(0, velocity.x + movementComponent.inAirHorizontalDeceleration);
+            velocity.x = Math.min(0, velocity.x + playerComponent.inAirHorizontalDeceleration);
         }
 
         bodyComponent.body.setLinearVelocity(velocity);
     }
 
-    private void bulletHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent, MovementComponent movementComponent){
-        if(InputHandler.playerInputState.jumpPressed && !InputHandler.prevPlayerInputState.jumpPressed){
+    private void bulletHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        if(InputHandler.playerInputState.downPressed){
+            playerComponent.prevPlayerState = playerComponent.playerState;
             playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+
+            Fixture f = bodyComponent.body.getFixtureList().get(0);
+
+            f.setRestitution(playerComponent.prevRestitution);
+            f.setFriction(playerComponent.prevFriction);
+
+            //bodyComponent.body.getFixtureList().set(0, f);
+
+
             bodyComponent.body.setGravityScale(1);
-            bodyComponent.body.getFixtureList().get(0).setRestitution(0);
+            bodyComponent.body.setBullet(false);
 
             Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
-            velocity.setLength(movementComponent.maxHorizontalSpeed);
+            velocity.setLength(playerComponent.maxHorizontalSpeed*3);
             bodyComponent.body.setLinearVelocity(velocity);
         }
 
