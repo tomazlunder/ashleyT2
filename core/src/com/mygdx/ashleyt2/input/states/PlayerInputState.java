@@ -9,6 +9,7 @@ public class PlayerInputState {
     public boolean downPressed;
     public boolean leftPressed;
     public boolean rightPressed;
+    public boolean jumpPressed;
 
     public boolean shootPressed;
 
@@ -17,6 +18,7 @@ public class PlayerInputState {
         downPressed = false;
         leftPressed = false;
         rightPressed = false;
+        jumpPressed = false;
 
         shootPressed = false;
     }

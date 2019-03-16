@@ -10,8 +10,16 @@ public class InputHandler {
     public static AdminInputState adminInputState;
     public static PlayerInputState playerInputState;
 
+    public static PlayerInputState prevPlayerInputState;
+
 
     public static void updateStates(){
+        if(playerInputState != null){
+            prevPlayerInputState = playerInputState;
+        } else {
+            prevPlayerInputState = createPlayerInputState();
+        }
+
         playerInputState = createPlayerInputState();
         adminInputState = createAdminInputState();
     }
@@ -33,6 +41,10 @@ public class InputHandler {
 
         if(Gdx.input.isKeyPressed(Input.Keys.D)){
             playerInputState.rightPressed = true;
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+            playerInputState.jumpPressed = true;
         }
 
         if(Gdx.input.isTouched()){

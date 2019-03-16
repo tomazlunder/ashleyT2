@@ -10,10 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.components.B2dBodyComponent;
-import com.mygdx.ashleyt2.components.NameComponent;
-import com.mygdx.ashleyt2.components.PlayerComponent;
-import com.mygdx.ashleyt2.components.TransformComponent;
+import com.mygdx.ashleyt2.components.*;
 import com.mygdx.ashleyt2.input.InputHandler;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.B2dRenderSystem;
@@ -26,7 +23,9 @@ public class GameScreen implements Screen {
     Engine engine;
     World world;
 
-    Vector2 gravity = new Vector2(0f,-9.8f);
+    //Vector2 gravity = new Vector2(0f,-9.8f);
+    Vector2 gravity = new Vector2(0f,-13.8f);
+
 
     private int pixels_per_meter;
     private float pixels_to_meters;
@@ -144,14 +143,21 @@ public class GameScreen implements Screen {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x,y);
 
+
         Body body = world.createBody(bodyDef);
+        body.setFixedRotation(true);
+
         CircleShape shape = new CircleShape();
         shape.setRadius(0.5f);
+        //PolygonShape shape = new PolygonShape();
+        //shape.setAsBox(0.5f,0.5f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
         fixtureDef.friction = 0.3f;
+        fixtureDef.restitution = 0f;
+
         body.createFixture(fixtureDef);
 
         body.createFixture(shape,0);
@@ -159,7 +165,8 @@ public class GameScreen implements Screen {
         entity.add(new TransformComponent(position))
                 .add(new B2dBodyComponent(body))
                 .add(new NameComponent("ball"))
-                .add(new PlayerComponent());
+                .add(new PlayerComponent())
+                .add(new MovementComponent(0.5f, 1f, 5, 7f, 0.03f));
 
 
         //Add to engine
@@ -184,7 +191,8 @@ public class GameScreen implements Screen {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 1;
-        fixtureDef.friction = 0.3f;
+        fixtureDef.friction = 0.5f;
+        //fixtureDef.restitution = 0;
         body.createFixture(fixtureDef);
 
         body.createFixture(shape,0);
