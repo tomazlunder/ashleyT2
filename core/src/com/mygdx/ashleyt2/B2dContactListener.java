@@ -1,5 +1,6 @@
 package com.mygdx.ashleyt2;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -12,11 +13,9 @@ import com.mygdx.ashleyt2.screens.MainMenuScreen;
 public class B2dContactListener implements ContactListener {
 
     private GameClass game;
-    private GameScreen gameScreen;
 
-    public B2dContactListener(GameClass game, GameScreen gameScreen){
+    public B2dContactListener(GameClass game){
         this.game = game;
-        this.gameScreen = gameScreen;
     }
 
 
@@ -38,8 +37,10 @@ public class B2dContactListener implements ContactListener {
 
     private void entityCollision(String fa, String fb) {
         if((fa.equals("player") && fb.equals("finish")) || (fa.equals("finish") && fb.equals("player"))){
+            Screen currentScreen = game.getScreen();
+
             game.setScreen(new MainMenuScreen(game));
-            gameScreen.dispose();
+            currentScreen.dispose();
         }
     }
 
