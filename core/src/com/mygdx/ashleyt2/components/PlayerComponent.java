@@ -31,8 +31,10 @@ public class PlayerComponent implements Component {
 
     //BULLET
     public float prevRestitution, prevFriction;
+    public float bulletSpeed;
+    public boolean bounced;
 
-    public PlayerComponent(float hAcc, float hDecc, float maxHorizontalSpeed, float jump_speed, float inAirHorizontalDeceleration){
+    public PlayerComponent(float hAcc, float hDecc, float maxHorizontalSpeed, float jump_speed, float inAirHorizontalDeceleration, float bulletSpeed){
         this.playerID = playerIDcounter;
         this.playerIDcounter++;
 
@@ -51,5 +53,7 @@ public class PlayerComponent implements Component {
 
         this.jump_speed = jump_speed;
         this.inAirHorizontalDeceleration = inAirHorizontalDeceleration;
+        this.bulletSpeed = bulletSpeed;
+        this.bounced = false;
     };
 }

@@ -1,61 +1,51 @@
 package com.mygdx.ashleyt2;
 
-
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.mygdx.ashleyt2.components.B2dBodyComponent;
+
+import com.mygdx.ashleyt2.screens.GameScreen;
+import com.mygdx.ashleyt2.screens.MainMenuScreen;
 
 public class B2dContactListener implements ContactListener {
 
-    private ComponentMapper<B2dBodyComponent> vm = ComponentMapper.getFor(B2dBodyComponent.class);
+    private GameClass game;
+    private GameScreen gameScreen;
+
+    public B2dContactListener(GameClass game, GameScreen gameScreen){
+        this.game = game;
+        this.gameScreen = gameScreen;
+    }
+
 
 
     @Override
     public void beginContact(Contact contact) {
-        System.out.println("Contact");
         // get fixtures
         Fixture fa = contact.getFixtureA();
         Fixture fb = contact.getFixtureB();
-        System.out.println(fa.getBody().getType()+" has hit "+ fb.getBody().getType());
-        // check if either fixture has an Entity object stored in the body's userData
-        if(fa.getBody().getUserData() instanceof Entity){
-            Entity ent = (Entity) fa.getBody().getUserData();
-            entityCollision(ent,fb);
-            return;
-        }else if(fb.getBody().getUserData() instanceof Entity){
-            Entity ent = (Entity) fb.getBody().getUserData();
-            entityCollision(ent,fa);
-            return;
+
+        // check if both fixtures have a String object stored in the body's userData
+        if(fa.getBody().getUserData() instanceof String){
+            if(fb.getBody().getUserData() instanceof String) {
+                entityCollision((String) fa.getBody().getUserData(),(String) fb.getBody().getUserData());
+            }
         }
+
     }
 
-    private void entityCollision(Entity ent, Fixture fb) {
-        // check the collided Entity is also an Entity
-        if(fb.getBody().getUserData() instanceof Entity){
-            Entity colEnt = (Entity) fb.getBody().getUserData();
-            // get the components for this entity
-            //CollisionComponent col = ent.getComponent(CollisionComponent.class);
-            //CollisionComponent colb = colEnt.getComponent(CollisionComponent.class);
-
-            // set the CollisionEntity of the component
-            /*
-            if(col != null){
-                col.collisionEntity = colEnt;
-            }else if(colb != null){
-                colb.collisionEntity = ent;
-            }
-            */
+    private void entityCollision(String fa, String fb) {
+        if((fa.equals("player") && fb.equals("finish")) || (fa.equals("finish") && fb.equals("player"))){
+            game.setScreen(new MainMenuScreen(game));
+            gameScreen.dispose();
         }
     }
 
     @Override
     public void endContact(Contact contact) {
-        System.out.println("Contact end");
+        //System.out.println("Contact end");
     }
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
