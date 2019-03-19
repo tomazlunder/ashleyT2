@@ -1,8 +1,6 @@
-package com.mygdx.ashleyt2.levels;
+package com.mygdx.ashleyt2.level;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
 
 import java.io.BufferedReader;
@@ -68,7 +66,7 @@ public class ParsedLevel implements LevelInterface {
         }
     }
     private void executeCommands(Engine engine, World world, float pixels_per_meter){
-        LevelObjectFactory levelObjectFactory = new LevelObjectFactory(engine, world, pixels_per_meter);
+        EntityFactory entityFactory = new EntityFactory(engine, world, pixels_per_meter);
 
         for(String command : commands){
             if(command.startsWith("player")){
@@ -77,7 +75,7 @@ public class ParsedLevel implements LevelInterface {
                 float x = Float.parseFloat(args[0]);
                 float y = Float.parseFloat(args[1]);
 
-                levelObjectFactory.createPlayer(x,y);
+                entityFactory.createPlayer(x,y);
             }
 
             else if(command.startsWith("platform")){
@@ -88,7 +86,7 @@ public class ParsedLevel implements LevelInterface {
                 float w = Float.parseFloat(args[2]);
                 float h = Float.parseFloat(args[3]);
 
-                levelObjectFactory.createPlatform(x,y, w, h);
+                entityFactory.createPlatform(x,y, w, h);
 
             }
             else if(command.startsWith("finish")){
@@ -99,7 +97,7 @@ public class ParsedLevel implements LevelInterface {
                 float w = Float.parseFloat(args[2]);
                 float h = Float.parseFloat(args[3]);
 
-                levelObjectFactory.createFinish(x,y, w, h);
+                entityFactory.createFinish(x,y, w, h);
             }
         }
     }

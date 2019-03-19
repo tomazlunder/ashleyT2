@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.ui.widgets.FileChooser;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.levels.ParsedLevel;
+import com.mygdx.ashleyt2.level.ParsedLevel;
 
 public class AdminMenuScreen implements Screen {
     final GameClass game;
@@ -77,12 +77,12 @@ public class AdminMenuScreen implements Screen {
                     protected void result(Object object) {
                         if (object.equals("OK")) {
                             FileHandle file = getFile();
-                            game.setScreen(new GameScreen(game, new ParsedLevel("levels/"+file.name())));
+                            game.setScreen(new GameScreen(game, new ParsedLevel("level/"+file.name())));
                             dispose();
                         }
                     }
                 };
-                files.setDirectory(Gdx.files.internal("levels"));
+                files.setDirectory(Gdx.files.internal("level"));
                 files.show(stage);
             }
         });
@@ -91,7 +91,7 @@ public class AdminMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new LevelEditorScreen(game, new ParsedLevel("levels/level1.lvl")));
+                game.setScreen(new LevelEditorScreen(game, new ParsedLevel("level/gen/default.lvl")));
                 dispose();
             }
         });

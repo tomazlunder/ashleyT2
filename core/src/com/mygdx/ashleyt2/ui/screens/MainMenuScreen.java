@@ -16,8 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.levels.hardcoded.HardcodedLevel;
-import com.mygdx.ashleyt2.levels.ParsedLevel;
+import com.mygdx.ashleyt2.level.hardcoded.HardcodedLevel;
+import com.mygdx.ashleyt2.level.ParsedLevel;
 
 public class MainMenuScreen implements Screen {
     final GameClass game;
@@ -80,7 +80,7 @@ public class MainMenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new GameScreen(game, new ParsedLevel("levels/level1.lvl")));
+                game.setScreen(new GameScreen(game, new ParsedLevel("level/level1.lvl")));
 
             }
         });
@@ -105,7 +105,7 @@ public class MainMenuScreen implements Screen {
         Label emptyLabel = new Label("",skin);
 
         mainTable.columnDefaults(6);
-        mainTable.debug();
+        //mainTable.debug();
 
         mainTable.add().colspan(1).expandX();
         mainTable.add(titleLabel).colspan(4).center().bottom().expandX().expandY();
