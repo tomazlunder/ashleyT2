@@ -7,26 +7,19 @@ import com.badlogic.gdx.math.Vector3;
 public class TransformComponent implements Component {
     //PIXEL WORLD coordinates
     public Vector3 position;
-    public Vector3 oldPosition;
 
+    //Transformation settings
+    public float width, height;
     public Vector2 scale;
     public float rotation;
 
-    public TransformComponent(Vector3 position, Vector2 scale, float rotation){
+    public TransformComponent(Vector3 position, float width, float height){
         this.position = position.cpy();
-        this.oldPosition = position.cpy();
 
-        this.scale = scale.cpy();
-        this.rotation = rotation;
-    }
-
-    public TransformComponent(Vector3 position){
-        this.position = position.cpy();
-        this.oldPosition = position.cpy();
+        this.width = width;
+        this.height = height;
 
         this.scale = new Vector2(1f,1f);
         this.rotation = 0;
     }
-
-
 }

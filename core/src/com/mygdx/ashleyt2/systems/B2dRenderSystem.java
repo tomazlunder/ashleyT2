@@ -12,7 +12,6 @@ public class B2dRenderSystem extends IteratingSystem {
 
     private Box2DDebugRenderer debugRenderer;
     private World world;
-    private OrthographicCamera camera;
 
     private Matrix4 matrix4;
 
@@ -21,7 +20,6 @@ public class B2dRenderSystem extends IteratingSystem {
         super(Family.all().get());
         debugRenderer = new Box2DDebugRenderer();
         this.world = world;
-        this.camera = camera;
 
         this.matrix4 = new Matrix4(camera.combined);
         matrix4.scale(pixels_per_meter, pixels_per_meter, 1f);

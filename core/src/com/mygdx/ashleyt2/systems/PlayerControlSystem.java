@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
@@ -18,6 +19,14 @@ public class PlayerControlSystem extends EntitySystem {
     private ComponentMapper<PlayerComponent> pm = ComponentMapper.getFor(PlayerComponent.class);
     private ComponentMapper<B2dBodyComponent> vm = ComponentMapper.getFor(B2dBodyComponent.class);
 
+    private float pixels_per_meter;
+    private float pixels_to_meters;
+
+    public PlayerControlSystem(float pixels_per_meter){
+        this.pixels_per_meter = pixels_per_meter;
+        this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
+    }
+
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -29,7 +38,6 @@ public class PlayerControlSystem extends EntitySystem {
         for(com.badlogic.ashley.core.Entity e : entities){
             PlayerComponent playerComponent = pm.get(e);
             B2dBodyComponent bodyComponent = vm.get(e);
-
 
             //AIR TO ...
             if(playerComponent.playerState == PlayerComponent.PlayerState.AIR){
@@ -44,8 +52,8 @@ public class PlayerControlSystem extends EntitySystem {
                 }
 
                 //air to BULLET
-                else if(playerComponent.prevPlayerState != PlayerComponent.PlayerState.BULLET && !InputHandler.prevPlayerInputState.jumpPressed && InputHandler.playerInputState.jumpPressed){
-                    airToBullet(playerComponent,bodyComponent);
+                else if( !InputHandler.prevPlayerInputState.jumpPressed && InputHandler.playerInputState.jumpPressed){
+                    airToBullet2(playerComponent,bodyComponent);
                 }
             }
 
@@ -56,8 +64,6 @@ public class PlayerControlSystem extends EntitySystem {
             }
 
             //Handle reactions to inputs based on player state
-
-
             if(playerComponent.playerState == PlayerComponent.PlayerState.BULLET) bulletHandler(deltaTime, playerComponent,bodyComponent);
             if(playerComponent.playerState == PlayerComponent.PlayerState.GROUNDED) groundedHandler(deltaTime, playerComponent,bodyComponent);
             if(playerComponent.playerState == PlayerComponent.PlayerState.AIR) airHandler(deltaTime, playerComponent,bodyComponent);
@@ -68,6 +74,7 @@ public class PlayerControlSystem extends EntitySystem {
 
     //STATE HANDLERS
     private void groundedHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        System.out.println("Grounded");
         Vector2 velocity = new Vector2(playerComponent.velocity);
         velocity.limit(playerComponent.maxHorizontalSpeed);
 
@@ -116,6 +123,8 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void airHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        System.out.println("Air");
+
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
         if(velocity.x > 0){
             velocity.x = Math.max(0, velocity.x - playerComponent.inAirHorizontalDeceleration);
@@ -128,8 +137,11 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void bulletHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        System.out.println("Bullet");
+
         //InputHandler.playerInputState.downPressed &&
         if( playerComponent.bounced){
+            System.out.println("Bounced");
             bulletToAir(playerComponent,bodyComponent);
         }
 
@@ -139,6 +151,15 @@ public class PlayerControlSystem extends EntitySystem {
                 !playerComponent.prevB2dVelocity.equals(velocity)){
             //System.out.println("Bounced");
             playerComponent.bounced = true;
+        }
+
+        if(InputHandler.playerInputState.downPressed){
+            velocity = new Vector2(0,-1);
+            velocity.scl(playerComponent.bulletSpeed);
+
+            bodyComponent.body.setLinearVelocity(velocity);
+
+            bulletToAir(playerComponent,bodyComponent);
         }
     }
 
@@ -167,23 +188,55 @@ public class PlayerControlSystem extends EntitySystem {
         playerComponent.bounced = false;
     }
 
-    private void bulletToAir(PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+    private void airToBullet2(PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
         playerComponent.prevPlayerState = playerComponent.playerState;
-        playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+        playerComponent.playerState = PlayerComponent.PlayerState.BULLET;
 
         Fixture f = bodyComponent.body.getFixtureList().get(0);
 
+        playerComponent.prevRestitution = f.getRestitution();
+        playerComponent.prevFriction = f.getFriction();
+
+        f.setRestitution(1f);
+        f.setFriction(0f);
+        //f.getShape().setRadius(0.1f);
+
+        bodyComponent.body.setGravityScale(0);
+        bodyComponent.body.setBullet(true);
+
+        Vector2 velocity = getMousePosInGameWorld();
+        velocity.sub(bodyComponent.body.getPosition());
+        velocity.setLength(playerComponent.bulletSpeed);
+
+
+
+        bodyComponent.body.setLinearVelocity(velocity);
+
+        playerComponent.bounced = false;
+    }
+
+    private void bulletToAir(PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        //Set new state
+        playerComponent.prevPlayerState = playerComponent.playerState;
+        playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+
+        //Get fixture
+        Fixture f = bodyComponent.body.getFixtureList().get(0);
+
+        //Change to bullet mode physics
         f.setRestitution(playerComponent.prevRestitution);
         f.setFriction(playerComponent.prevFriction);
-
-        //bodyComponent.body.getFixtureList().set(0, f);
-
 
         bodyComponent.body.setGravityScale(1);
         bodyComponent.body.setBullet(false);
 
+        //Set the new velocity
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
         velocity.setLength(playerComponent.maxHorizontalSpeed*3);
         bodyComponent.body.setLinearVelocity(velocity);
+    }
+
+    Vector2 getMousePosInGameWorld() {
+        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
     }
 }

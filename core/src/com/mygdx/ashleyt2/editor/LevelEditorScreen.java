@@ -17,9 +17,8 @@ import com.mygdx.ashleyt2.levels.LevelInterface;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.B2dRenderSystem;
 import com.mygdx.ashleyt2.systems.PlayerControlSystem;
-import com.mygdx.ashleyt2.systems.RenderingSystem;
 
-public class GameScreen implements Screen {
+public class LevelEditorScreen implements Screen {
     //NEEDED FOR EVERY (BOX2D) GAME
     private final GameClass game;
 
@@ -35,7 +34,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
 
-    public GameScreen(final GameClass game, LevelInterface levelInterface) {
+    public LevelEditorScreen(final GameClass game, LevelInterface levelInterface) {
         this.game = game;
 
         //Create basic components
@@ -50,13 +49,14 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         //Add systems
-        //engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
+        engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
         engine.addSystem(new B2dPhysicsSystem(world, pixels_per_meter));
-        engine.addSystem(new RenderingSystem(game.batch));
-        engine.addSystem(new PlayerControlSystem(pixels_per_meter));
+        engine.addSystem(new PlayerControlSystem(pixels_to_meters));
 
         //Load entities
-        levelInterface.addEntities(engine,world,pixels_per_meter);
+        if(levelInterface != null){
+            levelInterface.addEntities(engine,world,pixels_per_meter);
+        }
     }
 
 
@@ -67,9 +67,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
@@ -80,9 +79,7 @@ public class GameScreen implements Screen {
 
 
         InputHandler.updateStates();
-        game.batch.begin();
-        engine.update(delta);
-        game.batch.end();
+        //engine.update(delta);
 
     }
 

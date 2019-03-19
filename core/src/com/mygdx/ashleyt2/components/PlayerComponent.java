@@ -11,6 +11,7 @@ public class PlayerComponent implements Component {
     public enum PlayerState{GROUNDED,AIR,BULLET};
     public PlayerState playerState;
     public PlayerState prevPlayerState;
+    public float timeInState;
 
     //Player movement stuff...
     //GROUNDED
@@ -36,10 +37,11 @@ public class PlayerComponent implements Component {
 
     public PlayerComponent(float hAcc, float hDecc, float maxHorizontalSpeed, float jump_speed, float inAirHorizontalDeceleration, float bulletSpeed){
         this.playerID = playerIDcounter;
-        this.playerIDcounter++;
+        playerIDcounter++;
 
         this.playerState = PlayerState.AIR;
         this.prevPlayerState = PlayerState.AIR;
+        this.timeInState = 0;
 
         //Movement
         this.horizontalAcceleration = hAcc;

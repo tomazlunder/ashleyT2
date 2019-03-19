@@ -21,8 +21,8 @@ public class B2dPhysicsSystem extends IteratingSystem {
     private World world;
     private Array<Entity> bodiesQueue;
     // component mappers
-    private ComponentMapper<B2dBodyComponent> bm = ComponentMapper.getFor(B2dBodyComponent.class);
-    private ComponentMapper<TransformComponent> tm = ComponentMapper.getFor(TransformComponent.class);
+    private ComponentMapper<B2dBodyComponent> bodyMap = ComponentMapper.getFor(B2dBodyComponent.class);
+    private ComponentMapper<TransformComponent> transformMap = ComponentMapper.getFor(TransformComponent.class);
 
     float pixels_per_meter;
     float pixels_to_meters;
@@ -51,15 +51,15 @@ public class B2dPhysicsSystem extends IteratingSystem {
             //Loop through all Entities and update our components
             for (Entity entity : bodiesQueue) {
                 // get components
-                TransformComponent tfm = tm.get(entity);
-                B2dBodyComponent bodyComp = bm.get(entity);
+                TransformComponent transformComponent = transformMap.get(entity);
+                B2dBodyComponent bodyComponent = bodyMap.get(entity);
                 // get position from body
-                Vector2 position = bodyComp.body.getPosition().cpy();
+                Vector2 position = bodyComponent.body.getPosition().cpy();
                 // update our transform to match body position
 
                 position.scl(pixels_per_meter);
-                tfm.position = new Vector3(position.x, position.y, tfm.position.z);
-                tfm.rotation = bodyComp.body.getAngle() * MathUtils.radiansToDegrees;
+                transformComponent.position = new Vector3(position.x, position.y, transformComponent.position.z);
+                transformComponent.rotation = bodyComponent.body.getAngle() * MathUtils.radiansToDegrees;
             }
         }
         // empty queue
