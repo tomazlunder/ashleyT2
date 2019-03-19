@@ -2,8 +2,6 @@ package com.mygdx.ashleyt2.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 
 public class TextureComponent implements Component {
     public TextureRegion textureRegion;

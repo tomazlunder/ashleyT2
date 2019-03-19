@@ -32,7 +32,7 @@ public class LevelObjectFactory {
     }
 
     public void saveCommandsAsFile(String path){
-        FileHandle file = Gdx.files.local("levels/HCout.lvl");
+        FileHandle file = Gdx.files.local("levels/gen/factoryOUT.lvl");
         file.writeString("",false);
         for(String command : savedCommands){
             file.writeString(command, true);
@@ -42,6 +42,8 @@ public class LevelObjectFactory {
 
 
     public void createPlayer(float x, float y){
+        SerializableComponent serializableComponent = new SerializableComponent("player");
+
         savedCommands.add("player "+x+" "+y);
 
         Entity entity = new Entity();
@@ -74,7 +76,7 @@ public class LevelObjectFactory {
 
         entity.add(new TransformComponent(position,0.5f*2*pixels_per_meter, 0.5f*2*pixels_per_meter))
                 .add(new B2dBodyComponent(body))
-                .add(new NameComponent("ball"))
+                .add(serializableComponent)
                 .add(new PlayerComponent(0.5f, 1f, 5, 12f, 0.01f, 20f))
                 .add(new TextureComponent(textureRegion));
 
@@ -83,6 +85,10 @@ public class LevelObjectFactory {
     }
 
     public void createPlatform(float x, float y, float w, float h){
+        SerializableComponent serializableComponent = new SerializableComponent("platform");
+        serializableComponent.data.add(Float.toString(w));
+        serializableComponent.data.add(Float.toString(h));
+
         savedCommands.add("platform "+x+" "+y+" "+w+" "+h);
 
         Entity entity = new Entity();
@@ -111,7 +117,7 @@ public class LevelObjectFactory {
 
         entity.add(new TransformComponent(position,w*pixels_per_meter, h*pixels_per_meter))
                 .add(new B2dBodyComponent(body))
-                .add(new NameComponent("platform"))
+                .add(serializableComponent)
                 .add(new TextureComponent(textureRegion));
 
         //Add to engine
@@ -119,6 +125,10 @@ public class LevelObjectFactory {
     }
 
     public void createFinish(float x, float y, float w, float h){
+        SerializableComponent serializableComponent = new SerializableComponent("finish");
+        serializableComponent.data.add(Float.toString(w));
+        serializableComponent.data.add(Float.toString(h));
+
         savedCommands.add("finish "+x+" "+y+" "+w+" "+h);
 
         Entity entity = new Entity();
@@ -145,7 +155,7 @@ public class LevelObjectFactory {
 
         entity.add(new TransformComponent(position, w, h))
                 .add(new B2dBodyComponent(body))
-                .add(new NameComponent("finish"));
+                .add(serializableComponent);
 
         //Add to engine
         engine.addEntity(entity);

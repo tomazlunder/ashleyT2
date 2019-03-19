@@ -1,21 +1,17 @@
-package com.mygdx.ashleyt2.screens;
+package com.mygdx.ashleyt2.ui.screens;
 
 import com.badlogic.ashley.core.Engine;
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.B2dContactListener;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.components.*;
 import com.mygdx.ashleyt2.input.InputHandler;
 import com.mygdx.ashleyt2.levels.LevelInterface;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
-import com.mygdx.ashleyt2.systems.B2dRenderSystem;
 import com.mygdx.ashleyt2.systems.PlayerControlSystem;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
 

@@ -18,6 +18,7 @@ public class RenderingSystem extends SortedIteratingSystem {
     //Sprite batch
     private SpriteBatch batch;
 
+
     @SuppressWarnings("unchecked")
     public RenderingSystem(SpriteBatch batch){
         super(Family.all(TransformComponent.class,TextureComponent.class).get(), new ZComparator());
@@ -40,5 +41,6 @@ public class RenderingSystem extends SortedIteratingSystem {
                 transformComponent.scale.y,
                 transformComponent.rotation);
     }
+
 }
 

@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.screens;
+package com.mygdx.ashleyt2.ui.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -59,8 +59,12 @@ public class MainMenuScreen implements Screen {
 
         //Create buttons
         TextButton playButton = new TextButton("Play (default level)", skin);
-        TextButton optionsButton = new TextButton("Level select", skin);
+        TextButton parseLevel = new TextButton("Level select", skin);
         TextButton exitButton = new TextButton("Exit", skin);
+
+        TextButton adminButon = new TextButton("Admin", skin);
+
+        adminButon.setWidth(playButton.getWidth()/2);
 
         //Add listeners to buttons
         playButton.addListener(new ClickListener(){
@@ -72,13 +76,12 @@ public class MainMenuScreen implements Screen {
             }
         });
 
-        optionsButton.addListener(new ClickListener(){
+        parseLevel.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setInputProcessor(new InputMultiplexer());
                 game.setScreen(new GameScreen(game, new ParsedLevel("levels/level1.lvl")));
-                //game.setScreen(new LevelSelectScreen(game));
-                //dispose();
+
             }
         });
 
@@ -89,12 +92,20 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        adminButon.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new AdminMenuScreen(game));
+                dispose();
+            }
+        });
+
 
         Label titleLabel = new Label("Game title", skin);
         Label emptyLabel = new Label("",skin);
 
         mainTable.columnDefaults(6);
-        //mainTable.debug();
+        mainTable.debug();
 
         mainTable.add().colspan(1).expandX();
         mainTable.add(titleLabel).colspan(4).center().bottom().expandX().expandY();
@@ -113,7 +124,7 @@ public class MainMenuScreen implements Screen {
 
         mainTable.row().fillX().fillY();
         mainTable.add().colspan(2).expandX();
-        mainTable.add(optionsButton).colspan(2).center().expandX().expandY();
+        mainTable.add(parseLevel).colspan(2).center().expandX().expandY();
         mainTable.add().colspan(2).expandX();
 
         mainTable.row().fillX();
@@ -125,7 +136,7 @@ public class MainMenuScreen implements Screen {
         mainTable.add().colspan(2).expandX();
 
         mainTable.row().fillX();
-        mainTable.add(emptyLabel).colspan(6).expandX().expandY();
+        mainTable.add(adminButon).colspan(6).expandX().expandY();
 
 
         //Add table to stage

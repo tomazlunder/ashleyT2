@@ -1,23 +1,15 @@
-package com.mygdx.ashleyt2;
+package com.mygdx.ashleyt2.editor;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
-import com.mygdx.ashleyt2.components.SerializableComponent;
+import com.badlogic.gdx.physics.box2d.*;
+import com.mygdx.ashleyt2.GameClass;
 import com.mygdx.ashleyt2.ui.screens.MainMenuScreen;
 
-public class B2dContactListener implements ContactListener {
+public class B2dSelectListener implements ContactListener {
 
     private GameClass game;
 
-    private static ComponentMapper<SerializableComponent> serializableMapper;
-
-
-    public B2dContactListener(GameClass game){
+    public B2dSelectListener(GameClass game){
         this.game = game;
     }
 
@@ -32,14 +24,19 @@ public class B2dContactListener implements ContactListener {
         // check if both fixtures have a String object stored in the body's userData
         if(fa.getBody().getUserData() instanceof String){
             if(fb.getBody().getUserData() instanceof String) {
-                entityCollision((String) fa.getBody().getUserData(),(String) fb.getBody().getUserData());
+                //entityCollision((String) fa.getBody().getUserData(),(String) fb.getBody().getUserData());
             }
         }
 
     }
 
     private void entityCollision(String fa, String fb) {
+        if((fa.equals("player") && fb.equals("finish")) || (fa.equals("finish") && fb.equals("player"))){
+            Screen currentScreen = game.getScreen();
 
+            game.setScreen(new MainMenuScreen(game));
+            currentScreen.dispose();
+        }
     }
 
     @Override

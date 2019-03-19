@@ -1,13 +1,9 @@
 package com.mygdx.ashleyt2;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.ashleyt2.screens.MainMenuScreen;
+import com.mygdx.ashleyt2.ui.screens.MainMenuScreen;
 
 public class GameClass extends Game {
 	public SpriteBatch batch;

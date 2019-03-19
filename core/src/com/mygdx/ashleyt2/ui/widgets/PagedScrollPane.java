@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2;
+package com.mygdx.ashleyt2.ui.widgets;
 
 
 import com.badlogic.gdx.math.MathUtils;
