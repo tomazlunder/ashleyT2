@@ -15,14 +15,9 @@ public class B2dContactListener implements ContactListener {
 
     private GameScreen gameScreen;
 
-    private static ComponentMapper<SerializableComponent> serializableMapper;
-
-
     public B2dContactListener(GameScreen gameScreen){
         this.gameScreen = gameScreen;
     }
-
-
 
     @Override
     public void beginContact(Contact contact) {

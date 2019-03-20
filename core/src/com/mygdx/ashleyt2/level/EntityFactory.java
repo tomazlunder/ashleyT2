@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
@@ -73,19 +74,11 @@ public class EntityFactory {
         fixtureDef.restitution = 0f;
 
         body.createFixture(fixtureDef);
-        body.createFixture(shape,0);
-
 
         B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
         //Player component
-        PlayerComponent playerComponent = new PlayerComponent(
-                Constants.playerHorizontalAcc,
-                Constants.playerHorizontalDec,
-                Constants.playerMaxHorizontalVelocity,
-                Constants.playerJumpVelocity,
-                Constants.playerAirHorizontalDec,
-                Constants.playerBulletSpeed);
+        PlayerComponent playerComponent = new PlayerComponent();
 
         //Texture component
         TextureRegion textureRegion = textureAtlas.findRegion(Constants.playerAtlasRegionKey);
@@ -137,8 +130,11 @@ public class EntityFactory {
         B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
         //Texture component
-        TextureRegion textureRegion = textureAtlas.findRegion("platform");
-        TextureComponent textureComponent = new TextureComponent(textureRegion);
+        //TextureRegion textureRegion = textureAtlas.findRegion("platform");
+        //TextureComponent textureComponent = new TextureComponent(textureRegion);
+        Texture blackTexture = new Texture("colors/black.png");
+        TextureRegion tr = new TextureRegion(blackTexture);
+        TextureComponent textureComponent = new TextureComponent(tr);
 
         //Add all components to entity
         entity.add(serializableComponent)

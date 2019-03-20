@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
 import com.mygdx.ashleyt2.components.PlayerComponent;
 import com.mygdx.ashleyt2.input.InputHandler;
+import com.mygdx.ashleyt2.level.Constants;
 
 public class PlayerControlSystem extends EntitySystem {
 
@@ -69,6 +70,8 @@ public class PlayerControlSystem extends EntitySystem {
             if(playerComponent.playerState == PlayerComponent.PlayerState.AIR) airHandler(deltaTime, playerComponent,bodyComponent);
 
             playerComponent.prevB2dVelocity = new Vector2(bodyComponent.body.getLinearVelocity());
+            playerComponent.prevFramePlayerState = playerComponent.playerState;
+
         }
     }
 
@@ -76,43 +79,43 @@ public class PlayerControlSystem extends EntitySystem {
     private void groundedHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
         System.out.println("Grounded");
         Vector2 velocity = new Vector2(playerComponent.velocity);
-        velocity.limit(playerComponent.maxHorizontalSpeed);
+        velocity.limit(Constants.playerMaxHorizontalVelocity);
 
         if(InputHandler.playerInputState.leftPressed && !InputHandler.playerInputState.rightPressed){
-            playerComponent.velocity.x -= playerComponent.horizontalAcceleration;
+            playerComponent.velocity.x -= Constants.playerHorizontalAcc;
 
             if(velocity.x <= 0){
-                velocity.x -= playerComponent.horizontalAcceleration;
+                velocity.x -= Constants.playerHorizontalAcc;
             }
             else {
-                velocity.x += playerComponent.horizontalDeceleration;
+                velocity.x += Constants.playerHorizontalDec;
                 velocity.x = Math.min(velocity.x, 0);
             }
         }
         else if(!InputHandler.playerInputState.leftPressed && InputHandler.playerInputState.rightPressed){
-            playerComponent.velocity.x -= playerComponent.horizontalAcceleration;
+            playerComponent.velocity.x -= Constants.playerHorizontalAcc;
 
             if(velocity.x >= 0){
-                velocity.x += playerComponent.horizontalAcceleration;
+                velocity.x += Constants.playerHorizontalAcc;
             }
             else {
-                velocity.x -= playerComponent.horizontalDeceleration;
+                velocity.x -= Constants.playerHorizontalDec;
                 velocity.x = Math.max(velocity.x, 0);
             }
         }
         //If none of movement keys is pressed (or both)
         else {
             if(velocity.x > 0){
-                velocity.x = Math.max(velocity.x - playerComponent.horizontalDeceleration, 0);
+                velocity.x = Math.max(velocity.x - Constants.playerHorizontalDec, 0);
             }
             else if (velocity.x < 0){
-                velocity.x = Math.min(velocity.x + playerComponent.horizontalDeceleration, 0);
+                velocity.x = Math.min(velocity.x + Constants.playerHorizontalDec, 0);
             }
         }
 
         if(InputHandler.playerInputState.jumpPressed){
-            velocity.y = playerComponent.jump_speed;
-            //playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+            velocity.y = Constants.playerJumpVelocity;
+            playerComponent.playerState = PlayerComponent.PlayerState.AIR;
             bodyComponent.body.setLinearVelocity(velocity);
             playerComponent.velocity.set(0,0);
             return;
@@ -127,10 +130,10 @@ public class PlayerControlSystem extends EntitySystem {
 
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
         if(velocity.x > 0){
-            velocity.x = Math.max(0, velocity.x - playerComponent.inAirHorizontalDeceleration);
+            velocity.x = Math.max(0, velocity.x - Constants.playerAirHorizontalDec);
         }
         if(velocity.x < 0){
-            velocity.x = Math.min(0, velocity.x + playerComponent.inAirHorizontalDeceleration);
+            velocity.x = Math.min(0, velocity.x + Constants.playerAirHorizontalDec);
         }
 
         bodyComponent.body.setLinearVelocity(velocity);
@@ -147,15 +150,16 @@ public class PlayerControlSystem extends EntitySystem {
 
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
 
-        if(playerComponent.prevB2dVelocity.len() > (playerComponent.bulletSpeed-1) &&
-                !playerComponent.prevB2dVelocity.equals(velocity)){
+        if(playerComponent.prevB2dVelocity.len() > (Constants.playerBulletSpeed-1) &&
+                !playerComponent.prevB2dVelocity.equals(velocity) &&
+                playerComponent.prevB2dVelocity.len() == velocity.len()){
             //System.out.println("Bounced");
             playerComponent.bounced = true;
         }
 
         if(InputHandler.playerInputState.downPressed){
             velocity = new Vector2(0,-1);
-            velocity.scl(playerComponent.bulletSpeed);
+            velocity.setLength(Constants.playerBulletSpeed);
 
             bodyComponent.body.setLinearVelocity(velocity);
 
@@ -181,7 +185,7 @@ public class PlayerControlSystem extends EntitySystem {
         bodyComponent.body.setBullet(true);
 
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
-        velocity.setLength(playerComponent.bulletSpeed);
+        velocity.setLength(Constants.playerBulletSpeed);
 
         bodyComponent.body.setLinearVelocity(velocity);
 
@@ -206,7 +210,7 @@ public class PlayerControlSystem extends EntitySystem {
 
         Vector2 velocity = getMousePosInGameWorld();
         velocity.sub(bodyComponent.body.getPosition());
-        velocity.setLength(playerComponent.bulletSpeed);
+        velocity.setLength(Constants.playerBulletSpeed);
 
 
 
@@ -232,7 +236,7 @@ public class PlayerControlSystem extends EntitySystem {
 
         //Set the new velocity
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
-        velocity.setLength(playerComponent.maxHorizontalSpeed*3);
+        velocity.setLength(Constants.playerAfterBounceSpeed);
         bodyComponent.body.setLinearVelocity(velocity);
     }
 

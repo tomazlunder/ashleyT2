@@ -157,7 +157,10 @@ public class MainMenuScreen implements Screen {
         mainTable.add().colspan(2).expandX();
 
         mainTable.row().fillX();
-        mainTable.add(adminButon).colspan(6).expandX().expandY();
+        mainTable.add().colspan(2).expandX();
+        mainTable.add(adminButon).colspan(2).expandX().expandY();
+        mainTable.add().colspan(2).expandX();
+
 
 
         //Add table to stage

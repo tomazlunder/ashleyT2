@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.B2dContactListener;
 import com.mygdx.ashleyt2.GameClass;
 import com.mygdx.ashleyt2.input.InputHandler;
+import com.mygdx.ashleyt2.level.Constants;
 import com.mygdx.ashleyt2.level.Level;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.PlayerControlSystem;
@@ -26,10 +27,7 @@ public class GameScreen implements Screen {
     private Engine engine;
     private World world;
 
-    private Vector2 gravity = new Vector2(0f,-17.8f);
-
     private OrthographicCamera camera;
-
 
     public boolean toMenu;
 
@@ -41,7 +39,7 @@ public class GameScreen implements Screen {
         this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
 
         this.engine = new Engine();
-        world = new World(gravity, true);
+        world = new World(Constants.gravity, true);
         world.setContactListener(new B2dContactListener(this));
 
         camera = new OrthographicCamera();
@@ -85,7 +83,8 @@ public class GameScreen implements Screen {
         game.batch.end();
 
         if(toMenu || Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
-            toMaimMenu();
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
 
     }
@@ -113,11 +112,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         world.dispose();
-    }
-
-    private void toMaimMenu(){
-        game.setScreen(new MainMenuScreen(game));
-        dispose();
     }
 
 }
