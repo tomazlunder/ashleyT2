@@ -8,15 +8,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
+import com.mygdx.ashleyt2.level.EntityFactory;
+import com.mygdx.ashleyt2.level.Level;
 import com.mygdx.ashleyt2.level.editor.EditorSelectSystem;
-import com.mygdx.ashleyt2.level.editor.WorldSerializer;
+import com.mygdx.ashleyt2.level.util.EntitySerializer;
 import com.mygdx.ashleyt2.input.InputHandler;
-import com.mygdx.ashleyt2.level.LevelInterface;
+import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
 
 import java.util.ArrayList;
@@ -36,21 +41,30 @@ public class LevelEditorScreen implements Screen {
 
     private OrthographicCamera camera;
 
-    private Body selector;
 
     public ArrayList<Entity> toRemove;
+    public ArrayList<String> toExecute;
+    private EntityFactory entityFactory;
 
     private Viewport viewport;
 
-    //Stage sta
+    Stage stage;
+    private Skin skin;
+    private TextureAtlas atlas;
+
+    Level level;
+
+    public Entity selectedEntity;
+
+    public boolean dialogOpen;
 
 
 
-    public LevelEditorScreen(final GameClass game, LevelInterface levelInterface) {
+    public LevelEditorScreen(final GameClass game, Level level) {
         this.game = game;
 
         //Create basic components
-        this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/levelInterface.getWorldWidth());
+        this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/level.width);
         this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
 
         this.engine = new Engine();
@@ -64,30 +78,23 @@ public class LevelEditorScreen implements Screen {
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.apply();
 
+        atlas = new TextureAtlas("ui/skins/default/uiskin.atlas");
+        stage = new Stage(viewport, game.batch);
+        skin = new Skin(Gdx.files.internal("ui/skins/default/skin.json"), atlas);
+
         //Add systems
         engine.addSystem(new RenderingSystem(game.batch));
-        engine.addSystem(new EditorSelectSystem(pixels_per_meter, this));
+        engine.addSystem(new EditorSelectSystem(stage,skin,pixels_per_meter, this));
 
         //Load entities
-        levelInterface.addEntities(engine,world,pixels_per_meter);
-
-        //Selector
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(-500,-500);
-
-        selector = world.createBody(bodyDef);
-        selector.setUserData("select");
-
-        CircleShape shape = new CircleShape();
-        shape.setRadius(0.5f);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-
-        selector.createFixture(fixtureDef);
+        level.loadSerializedObjects(engine,world,pixels_per_meter);
 
         toRemove = new ArrayList<Entity>();
+        toExecute = new ArrayList<String>();
+        entityFactory = new EntityFactory(engine,world,pixels_per_meter);
+        dialogOpen = false;
+
+        this.level = level;
     }
 
 
@@ -109,6 +116,13 @@ public class LevelEditorScreen implements Screen {
         game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
         game.batch.end();
 
+        if(toExecute.size() > 0){
+            for(String s : toExecute){
+                entityFactory.parseEntityFromString(s);
+            }
+        }
+        toExecute = new ArrayList<String>();
+
 
         InputHandler.updateStates();
         game.batch.begin();
@@ -116,12 +130,14 @@ public class LevelEditorScreen implements Screen {
         game.batch.end();
 
         if(Gdx.input.isKeyPressed(Input.Keys.P)){
-            saveTest(WorldSerializer.serializeWorld(engine));
-            Gdx.app.exit();
-        }
+            //saveTest(EntitySerializer.serializeWorld(engine));
+            //Gdx.app.exit();
 
-        if(Gdx.input.justTouched()){
-            selector.setTransform(getMousePosInGameWorld(),0);
+            level.updateLevelFromEngine(engine);
+            LevelLoaderSaver.saveLevelAsFile("level/gen/editorOUT.lvl", level);
+
+            this.game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
 
         if(toRemove.size() > 0){
@@ -129,6 +145,10 @@ public class LevelEditorScreen implements Screen {
                 engine.removeEntity(e);
             }
         }
+        toRemove = new ArrayList<Entity>();
+
+        stage.act();
+        stage.draw();
 
     }
 
@@ -154,7 +174,10 @@ public class LevelEditorScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
+        world.dispose();
+        skin.dispose();
+        atlas.dispose();
     }
 
     Vector2 getMousePosInGameWorld() {

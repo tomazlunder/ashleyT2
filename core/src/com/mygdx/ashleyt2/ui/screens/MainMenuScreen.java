@@ -3,6 +3,7 @@ package com.mygdx.ashleyt2.ui.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -16,8 +17,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
+import com.mygdx.ashleyt2.level.Level;
 import com.mygdx.ashleyt2.level.hardcoded.HardcodedLevel;
-import com.mygdx.ashleyt2.level.ParsedLevel;
+import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
+import com.mygdx.ashleyt2.ui.widgets.FileChooserDialog;
 
 public class MainMenuScreen implements Screen {
     final GameClass game;
@@ -59,7 +62,7 @@ public class MainMenuScreen implements Screen {
 
         //Create buttons
         TextButton playButton = new TextButton("Play (default level)", skin);
-        TextButton parseLevel = new TextButton("Level select", skin);
+        TextButton levelSelectButton = new TextButton("Level select", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
         TextButton adminButon = new TextButton("Admin", skin);
@@ -70,18 +73,36 @@ public class MainMenuScreen implements Screen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new GameScreen(game, new HardcodedLevel()));
+                Level level = new HardcodedLevel();
+                game.setScreen(new GameScreen(game, level));
                 dispose();
             }
         });
 
-        parseLevel.addListener(new ClickListener(){
+        levelSelectButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new GameScreen(game, new ParsedLevel("level/level1.lvl")));
 
+                FileChooserDialog files = new FileChooserDialog("Choose Level File", skin) {
+                    @Override
+                    protected void result(Object object) {
+                        if (object.equals("OK")) {
+                            FileHandle file = getFile();
+                            Level level = LevelLoaderSaver.loadFileAsLevel(file.path());
+
+                            if(level != null) {
+                                game.setScreen(new GameScreen(game, level));
+                                dispose();
+
+                            } else {
+                                System.out.println("[FILEchooserDIALOG] Failed to load level from selected file.");
+                                remove();
+                            }
+                        }
+                    }
+                };
+                files.setDirectory(Gdx.files.internal("level"));
+                files.show(stage);
             }
         });
 
@@ -124,7 +145,7 @@ public class MainMenuScreen implements Screen {
 
         mainTable.row().fillX().fillY();
         mainTable.add().colspan(2).expandX();
-        mainTable.add(parseLevel).colspan(2).center().expandX().expandY();
+        mainTable.add(levelSelectButton).colspan(2).center().expandX().expandY();
         mainTable.add().colspan(2).expandX();
 
         mainTable.row().fillX();

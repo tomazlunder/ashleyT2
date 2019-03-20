@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.B2dContactListener;
 import com.mygdx.ashleyt2.GameClass;
 import com.mygdx.ashleyt2.input.InputHandler;
-import com.mygdx.ashleyt2.level.LevelInterface;
+import com.mygdx.ashleyt2.level.Level;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.PlayerControlSystem;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
@@ -18,7 +18,6 @@ import com.mygdx.ashleyt2.systems.RenderingSystem;
 public class GameScreen implements Screen {
     //NEEDED FOR EVERY (BOX2D) GAME
     private final GameClass game;
-
 
     private int pixels_per_meter;
     private float pixels_to_meters;
@@ -31,11 +30,11 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
 
-    public GameScreen(final GameClass game, LevelInterface levelInterface) {
+    public GameScreen(final GameClass game, Level level) {
         this.game = game;
 
         //Create basic components
-        this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/levelInterface.getWorldWidth());
+        this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/level.width);
         this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
 
         this.engine = new Engine();
@@ -52,7 +51,7 @@ public class GameScreen implements Screen {
         engine.addSystem(new PlayerControlSystem(pixels_per_meter));
 
         //Load entities
-        levelInterface.addEntities(engine,world,pixels_per_meter);
+        level.loadSerializedObjects(engine,world,pixels_per_meter);
     }
 
 

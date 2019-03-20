@@ -40,16 +40,21 @@ public class EntityFactory {
         }
     }
 
-
     public void createPlayer(float x, float y){
-        SerializableComponent serializableComponent = new SerializableComponent("player");
-
         savedCommands.add("player "+x+" "+y);
 
+        //create entity
         Entity entity = new Entity();
+
+        //Serializable component
+        SerializableComponent serializableComponent = new SerializableComponent("player");
+        serializableComponent.data.add(""+x);
+        serializableComponent.data.add(""+y);
         //Transform component (transform positions into world coordinates)
         Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
-        //Box2d component
+        TransformComponent transformComponent = new TransformComponent(position,Constants.playerRadius*2*pixels_per_meter, Constants.playerRadius*2*pixels_per_meter);
+
+        //Box2dBody component
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x,y);
@@ -59,7 +64,7 @@ public class EntityFactory {
         body.setFixedRotation(true);
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(0.5f);
+        shape.setRadius(Constants.playerRadius);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -68,35 +73,53 @@ public class EntityFactory {
         fixtureDef.restitution = 0f;
 
         body.createFixture(fixtureDef);
-
         body.createFixture(shape,0);
 
-        //Texture
-        TextureRegion textureRegion = textureAtlas.findRegion("player");
 
-        entity.add(new TransformComponent(position,0.5f*2*pixels_per_meter, 0.5f*2*pixels_per_meter))
-                .add(new B2dBodyComponent(body))
-                .add(serializableComponent)
-                .add(new PlayerComponent(0.5f, 1f, 5, 12f, 0.01f, 20f))
-                .add(new TextureComponent(textureRegion));
+        B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
-        //Add to engine
+        //Player component
+        PlayerComponent playerComponent = new PlayerComponent(
+                Constants.playerHorizontalAcc,
+                Constants.playerHorizontalDec,
+                Constants.playerMaxHorizontalVelocity,
+                Constants.playerJumpVelocity,
+                Constants.playerAirHorizontalDec,
+                Constants.playerBulletSpeed);
+
+        //Texture component
+        TextureRegion textureRegion = textureAtlas.findRegion(Constants.playerAtlasRegionKey);
+        TextureComponent textureComponent = new TextureComponent(textureRegion);
+
+        //Add all components to entity
+        entity.add(serializableComponent)
+                .add(transformComponent)
+                .add(bodyComponent)
+                .add(playerComponent)
+                .add(textureComponent);
+
+        //Add entity to engine
         engine.addEntity(entity);
     }
 
     public void createPlatform(float x, float y, float w, float h){
+        savedCommands.add("platform "+x+" "+y+" "+w+" "+h);
+
+        //create Entity
+        Entity entity = new Entity();
+
+        //Serializable component
         SerializableComponent serializableComponent = new SerializableComponent("platform");
+        serializableComponent.data.add(Float.toString(x));
+        serializableComponent.data.add(Float.toString(y));
         serializableComponent.data.add(Float.toString(w));
         serializableComponent.data.add(Float.toString(h));
 
-        savedCommands.add("platform "+x+" "+y+" "+w+" "+h);
-
-        Entity entity = new Entity();
-
         //Transform component (transform positions into world coordinates)
         Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
+        TransformComponent transformComponent = new TransformComponent(position,w*pixels_per_meter, h*pixels_per_meter);
 
-        //Box2d component
+        //Box2dBody component
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x,y);
@@ -111,32 +134,41 @@ public class EntityFactory {
         fixtureDef.friction = 0.5f;
 
         body.createFixture(fixtureDef);
+        B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
-        //Texture
+        //Texture component
         TextureRegion textureRegion = textureAtlas.findRegion("platform");
+        TextureComponent textureComponent = new TextureComponent(textureRegion);
 
-        entity.add(new TransformComponent(position,w*pixels_per_meter, h*pixels_per_meter))
-                .add(new B2dBodyComponent(body))
-                .add(serializableComponent)
-                .add(new TextureComponent(textureRegion));
+        //Add all components to entity
+        entity.add(serializableComponent)
+                .add(transformComponent)
+                .add(bodyComponent)
+                .add(textureComponent);
 
-        //Add to engine
+        //Add entity to engine
         engine.addEntity(entity);
     }
 
     public void createFinish(float x, float y, float w, float h){
+        savedCommands.add("finish "+x+" "+y+" "+w+" "+h);
+
+        //create Entity
+        Entity entity = new Entity();
+
+        //Serializable component
         SerializableComponent serializableComponent = new SerializableComponent("finish");
+        serializableComponent.data.add(Float.toString(x));
+        serializableComponent.data.add(Float.toString(y));
         serializableComponent.data.add(Float.toString(w));
         serializableComponent.data.add(Float.toString(h));
 
-        savedCommands.add("finish "+x+" "+y+" "+w+" "+h);
-
-        Entity entity = new Entity();
-
         //Transform component (transform positions into world coordinates)
         Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
+        TransformComponent transformComponent = new TransformComponent(position,w*pixels_per_meter, h*pixels_per_meter);
 
-        //Box2d component
+
+        //Box2dBody component
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(x,y);
@@ -152,13 +184,52 @@ public class EntityFactory {
         fixtureDef.isSensor = true;
 
         body.createFixture(fixtureDef);
+        B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
-        entity.add(new TransformComponent(position, w, h))
-                .add(new B2dBodyComponent(body))
-                .add(serializableComponent);
+        //Add all components to entity
+        entity.add(serializableComponent)
+                .add(transformComponent)
+                .add(bodyComponent);
 
-        //Add to engine
+        //Add entity to engine
         engine.addEntity(entity);
     }
 
+    public void parseEntityFromString(String command) {
+        String fullCommand = command;
+        try {
+            if (command.startsWith("player")) {
+                command = command.substring(7);
+                String[] args = command.split(" ");
+
+                float x = Float.parseFloat(args[0]);
+                float y = Float.parseFloat(args[1]);
+
+                createPlayer(x, y);
+            } else if (command.startsWith("platform")) {
+                command = command.substring(9);
+                String[] args = command.split(" ");
+
+
+                float x = Float.parseFloat(args[0]);
+                float y = Float.parseFloat(args[1]);
+                float w = Float.parseFloat(args[2]);
+                float h = Float.parseFloat(args[3]);
+
+                createPlatform(x, y, w, h);
+
+            } else if (command.startsWith("finish")) {
+                command = command.substring(7);
+                String[] args = command.split(" ");
+                float x = Float.parseFloat(args[0]);
+                float y = Float.parseFloat(args[1]);
+                float w = Float.parseFloat(args[2]);
+                float h = Float.parseFloat(args[3]);
+
+                createFinish(x, y, w, h);
+            }
+        } catch (NumberFormatException nfe){
+            System.out.println("[ENTITY FACTORY] Failed to parse command into entity. Command: " + fullCommand);
+        }
+    }
 }

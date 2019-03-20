@@ -16,9 +16,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.mygdx.ashleyt2.ui.widgets.FileChooser;
+import com.mygdx.ashleyt2.level.Level;
+import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
+import com.mygdx.ashleyt2.ui.widgets.FileChooserDialog;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.level.ParsedLevel;
 
 public class AdminMenuScreen implements Screen {
     final GameClass game;
@@ -36,13 +37,11 @@ public class AdminMenuScreen implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.apply();
 
-
-        atlas = new TextureAtlas("ui/skins/default/uiskin.atlas");
         stage = new Stage(viewport, game.batch);
+        atlas = new TextureAtlas("ui/skins/default/uiskin.atlas");
         skin = new Skin(Gdx.files.internal("ui/skins/default/skin.json"), atlas);
     }
 
@@ -59,39 +58,14 @@ public class AdminMenuScreen implements Screen {
         //mainTable.left().top();
 
         //Create buttons
-        TextButton selectButton = new TextButton("Level select", skin);
         TextButton editorButton = new TextButton("Level editor", skin);
         TextButton backButon = new TextButton("Back", skin);
-
-        //Add listeners to buttons
-        selectButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                /*
-                Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new GameScreen(game, new HardcodedLevel()));
-                dispose();*/
-
-                FileChooser files = new FileChooser("Choose Level File", skin) {
-                    @Override
-                    protected void result(Object object) {
-                        if (object.equals("OK")) {
-                            FileHandle file = getFile();
-                            game.setScreen(new GameScreen(game, new ParsedLevel("level/"+file.name())));
-                            dispose();
-                        }
-                    }
-                };
-                files.setDirectory(Gdx.files.internal("level"));
-                files.show(stage);
-            }
-        });
 
         editorButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.input.setInputProcessor(new InputMultiplexer());
-                game.setScreen(new LevelEditorScreen(game, new ParsedLevel("level/gen/default.lvl")));
+                game.setScreen(new LevelEditorScreen(game, LevelLoaderSaver.loadFileAsLevel("level/gen/default.lvl")));
                 dispose();
             }
         });
@@ -117,11 +91,6 @@ public class AdminMenuScreen implements Screen {
 
         mainTable.row().fillX();
         mainTable.add(emptyLabel).colspan(6).expandX().expandY();
-
-        mainTable.row().fillX().fillY();
-        mainTable.add().colspan(2).expandX();
-        mainTable.add(selectButton).colspan(2).center().expandX().expandY();
-        mainTable.add().colspan(2).expandX();
 
         mainTable.row().fillX();
         mainTable.add(emptyLabel).colspan(6).expandX().expandY();
@@ -156,7 +125,7 @@ public class AdminMenuScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Main menu screen", 100, Gdx.graphics.getHeight());
+        game.font.draw(game.batch, "Admin menu screen", 100, Gdx.graphics.getHeight());
 
         game.batch.end();
 

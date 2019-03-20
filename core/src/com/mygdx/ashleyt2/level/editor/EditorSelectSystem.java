@@ -5,11 +5,12 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
 import com.mygdx.ashleyt2.components.SerializableComponent;
 import com.mygdx.ashleyt2.ui.screens.LevelEditorScreen;
-
-import java.util.ArrayList;
+import com.mygdx.ashleyt2.ui.widgets.EntityEditorDialog;
 
 public class EditorSelectSystem extends EntitySystem {
 
@@ -24,11 +25,16 @@ public class EditorSelectSystem extends EntitySystem {
     Engine engine;
     LevelEditorScreen levelEditorScreen;
 
-    public EditorSelectSystem(float pixels_per_meter, LevelEditorScreen levelEditorScreen) {
+    Stage stage;
+    Skin skin;
+
+    public EditorSelectSystem(Stage stage, Skin skin, float pixels_per_meter, LevelEditorScreen levelEditorScreen) {
         this.pixels_per_meter = pixels_per_meter;
         this.pixels_to_meters = 1.0f / (float) pixels_per_meter;
 
         this.levelEditorScreen = levelEditorScreen;
+        this.stage = stage;
+        this.skin = skin;
     }
 
 
@@ -42,18 +48,33 @@ public class EditorSelectSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         B2dBodyComponent bodyComponent;
-        levelEditorScreen.toRemove = new ArrayList<Entity>();
+        //levelEditorScreen.toRemove = new ArrayList<Entity>();
 
-        if(Gdx.input.justTouched()) {
+        if(Gdx.input.justTouched() && !levelEditorScreen.dialogOpen) {
             for (Entity e : entities) {
                 bodyComponent = bodyMapper.get(e);
 
                 for (Fixture f : bodyComponent.body.getFixtureList()) {
                     if ( f.testPoint(getMousePosInGameWorld())){
-                        System.out.println("CLICKED SOMETHING");
-                        levelEditorScreen.toRemove.add(e);
+                        System.out.println("ENTITY SELECTED");
+                        //levelEditorScreen.toRemove.add(e);
 
+                        Gdx.input.setInputProcessor(stage);
+                        levelEditorScreen.dialogOpen = true;
                         //Dialog to change settings or remove the selectec component
+                        EntityEditorDialog edit = new EntityEditorDialog("Edit window", skin, e) {
+                            @Override
+                            protected void result(Object object) {
+                                if (object.equals("OK")) {
+                                    levelEditorScreen.toRemove.add(this.entity);
+                                    levelEditorScreen.toExecute.add(this.generateCommand());
+                                }
+                                remove();
+                                levelEditorScreen.dialogOpen = false;
+                            }
+                        };
+                        edit.show(stage);
+
                         return;
                     }
                 }
