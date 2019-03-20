@@ -8,17 +8,18 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.mygdx.ashleyt2.components.SerializableComponent;
+import com.mygdx.ashleyt2.ui.screens.GameScreen;
 import com.mygdx.ashleyt2.ui.screens.MainMenuScreen;
 
 public class B2dContactListener implements ContactListener {
 
-    private GameClass game;
+    private GameScreen gameScreen;
 
     private static ComponentMapper<SerializableComponent> serializableMapper;
 
 
-    public B2dContactListener(GameClass game){
-        this.game = game;
+    public B2dContactListener(GameScreen gameScreen){
+        this.gameScreen = gameScreen;
     }
 
 
@@ -40,10 +41,7 @@ public class B2dContactListener implements ContactListener {
 
     private void entityCollision(String fa, String fb) {
         if((fa.equals("player") && fb.equals("finish")) || (fa.equals("finish") && fb.equals("player"))){
-            Screen currentScreen = game.getScreen();
-
-            game.setScreen(new MainMenuScreen(game));
-            currentScreen.dispose();
+            gameScreen.toMenu = true;
         }
     }
 

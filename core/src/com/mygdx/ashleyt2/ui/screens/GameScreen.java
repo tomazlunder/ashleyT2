@@ -2,6 +2,7 @@ package com.mygdx.ashleyt2.ui.screens;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,6 +31,8 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
 
 
+    public boolean toMenu;
+
     public GameScreen(final GameClass game, Level level) {
         this.game = game;
 
@@ -39,7 +42,7 @@ public class GameScreen implements Screen {
 
         this.engine = new Engine();
         world = new World(gravity, true);
-        world.setContactListener(new B2dContactListener(game));
+        world.setContactListener(new B2dContactListener(this));
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -52,6 +55,8 @@ public class GameScreen implements Screen {
 
         //Load entities
         level.loadSerializedObjects(engine,world,pixels_per_meter);
+
+        toMenu = false;
     }
 
 
@@ -79,6 +84,10 @@ public class GameScreen implements Screen {
         engine.update(delta);
         game.batch.end();
 
+        if(toMenu || Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
+            toMaimMenu();
+        }
+
     }
 
     @Override
@@ -103,14 +112,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        world.dispose();
     }
 
-    Vector2 getMousePosInGameWorld() {
-        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
-    }
-
-    public void toMaimMenu(){
+    private void toMaimMenu(){
         game.setScreen(new MainMenuScreen(game));
         dispose();
     }
