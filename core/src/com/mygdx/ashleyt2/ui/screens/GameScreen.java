@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.B2dContactListener;
 import com.mygdx.ashleyt2.GameClass;
 import com.mygdx.ashleyt2.input.InputHandler;
-import com.mygdx.ashleyt2.levels.LevelInterface;
+import com.mygdx.ashleyt2.level.LevelInterface;
 import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
 import com.mygdx.ashleyt2.systems.PlayerControlSystem;
 import com.mygdx.ashleyt2.systems.RenderingSystem;

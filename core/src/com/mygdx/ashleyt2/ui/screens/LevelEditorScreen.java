@@ -9,19 +9,14 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
-import com.mygdx.ashleyt2.B2dContactListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.components.*;
-import com.mygdx.ashleyt2.editor.B2dSelectListener;
-import com.mygdx.ashleyt2.editor.EditorSelectSystem;
-import com.mygdx.ashleyt2.editor.WorldSerializer;
+import com.mygdx.ashleyt2.level.editor.EditorSelectSystem;
+import com.mygdx.ashleyt2.level.editor.WorldSerializer;
 import com.mygdx.ashleyt2.input.InputHandler;
-import com.mygdx.ashleyt2.levels.LevelInterface;
-import com.mygdx.ashleyt2.systems.B2dPhysicsSystem;
-import com.mygdx.ashleyt2.systems.B2dRenderSystem;
-import com.mygdx.ashleyt2.systems.PlayerControlSystem;
+import com.mygdx.ashleyt2.level.LevelInterface;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
 
 import java.util.ArrayList;
@@ -45,6 +40,11 @@ public class LevelEditorScreen implements Screen {
 
     public ArrayList<Entity> toRemove;
 
+    private Viewport viewport;
+
+    //Stage sta
+
+
 
     public LevelEditorScreen(final GameClass game, LevelInterface levelInterface) {
         this.game = game;
@@ -55,17 +55,18 @@ public class LevelEditorScreen implements Screen {
 
         this.engine = new Engine();
         world = new World(gravity, true);
-        //world.setContactListener(new B2dSelectListener(game));
+
+        //camera = new OrthographicCamera();
+        //camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        viewport.apply();
 
         //Add systems
-        //engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
-        //.addSystem(new B2dPhysicsSystem(world, pixels_per_meter));
         engine.addSystem(new RenderingSystem(game.batch));
         engine.addSystem(new EditorSelectSystem(pixels_per_meter, this));
-        //engine.addSystem(new PlayerControlSystem(pixels_per_meter));
 
         //Load entities
         levelInterface.addEntities(engine,world,pixels_per_meter);
@@ -161,7 +162,7 @@ public class LevelEditorScreen implements Screen {
     }
 
     private void saveTest(ArrayList<String> savedCommands){
-            FileHandle file = Gdx.files.local("levels/gen/editorOUT.lvl");
+            FileHandle file = Gdx.files.local("level/gen/editorOUT.lvl");
             file.writeString("",false);
             for(String command : savedCommands){
                 file.writeString(command, true);

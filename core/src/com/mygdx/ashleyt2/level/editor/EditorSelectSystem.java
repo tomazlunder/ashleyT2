@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.editor;
+package com.mygdx.ashleyt2.level.editor;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -52,6 +52,8 @@ public class EditorSelectSystem extends EntitySystem {
                     if ( f.testPoint(getMousePosInGameWorld())){
                         System.out.println("CLICKED SOMETHING");
                         levelEditorScreen.toRemove.add(e);
+
+                        //Dialog to change settings or remove the selectec component
                         return;
                     }
                 }

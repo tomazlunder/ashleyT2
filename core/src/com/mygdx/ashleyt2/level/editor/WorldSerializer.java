@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.editor;
+package com.mygdx.ashleyt2.level.editor;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;

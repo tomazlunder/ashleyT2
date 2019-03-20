@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.levels;
+package com.mygdx.ashleyt2.level;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.physics.box2d.World;

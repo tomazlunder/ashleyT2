@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.levels;
+package com.mygdx.ashleyt2.level;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -12,7 +12,7 @@ import com.mygdx.ashleyt2.components.*;
 
 import java.util.ArrayList;
 
-public class LevelObjectFactory {
+public class EntityFactory {
 
     private Engine engine;
     private World world;
@@ -22,7 +22,7 @@ public class LevelObjectFactory {
 
     public TextureAtlas textureAtlas;
 
-    public LevelObjectFactory(Engine engine, World world, float pixels_per_meter){
+    public EntityFactory(Engine engine, World world, float pixels_per_meter){
         this.engine = engine;
         this.world = world;
         this.pixels_per_meter = pixels_per_meter;
@@ -32,7 +32,7 @@ public class LevelObjectFactory {
     }
 
     public void saveCommandsAsFile(String path){
-        FileHandle file = Gdx.files.local("levels/gen/factoryOUT.lvl");
+        FileHandle file = Gdx.files.local("level/gen/factoryOUT.lvl");
         file.writeString("",false);
         for(String command : savedCommands){
             file.writeString(command, true);

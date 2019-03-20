@@ -39,7 +39,12 @@ public class B2dContactListener implements ContactListener {
     }
 
     private void entityCollision(String fa, String fb) {
+        if((fa.equals("player") && fb.equals("finish")) || (fa.equals("finish") && fb.equals("player"))){
+            Screen currentScreen = game.getScreen();
 
+            game.setScreen(new MainMenuScreen(game));
+            currentScreen.dispose();
+        }
     }
 
     @Override
