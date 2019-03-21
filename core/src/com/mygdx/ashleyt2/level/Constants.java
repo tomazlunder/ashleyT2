@@ -13,7 +13,10 @@ public class Constants {
     public static float playerHorizontalDec = 1f;
     public static float playerMaxHorizontalVelocity = 8f;
     public static float playerJumpVelocity = 10f;
-    public static float playerDensity = 0f;
+
+    public static float playerDensity = 1;
+    public static float playerFriction = 0.3f;
+    public static float playerRestitution = 0f;
 
     public static float playerAfterBounceSpeed = 12f;
 

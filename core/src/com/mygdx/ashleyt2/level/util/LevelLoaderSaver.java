@@ -3,12 +3,17 @@ package com.mygdx.ashleyt2.level.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.ashleyt2.level.Level;
+import com.mygdx.ashleyt2.level.entity_objects.FinishObject;
+import com.mygdx.ashleyt2.level.entity_objects.PlatformObject;
+import com.mygdx.ashleyt2.level.entity_objects.PlayerObject;
+import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LevelLoaderSaver {
 
@@ -24,8 +29,8 @@ public class LevelLoaderSaver {
         file.writeString(level.width+"\n",true);
         file.writeString(level.height+"\n",true);
 
-        for(String command : level.serializedObjects){
-            file.writeString(command, true);
+        for(SerializableObject so : level.serializableObjects){
+            file.writeString(so.toString(), true);
             file.writeString("\n", true);
         }
     }
@@ -34,15 +39,22 @@ public class LevelLoaderSaver {
         try {
             BufferedReader in = new BufferedReader(new FileReader(path));
 
-            ArrayList<String> serializedObjects = new ArrayList<String>();
+            ArrayList<SerializableObject> sos = new ArrayList<SerializableObject>();
             String line;
             float width = 0;
             float height = 0;
 
             int i = 0;
             while((line = in.readLine()) != null){
-                if(line.startsWith("player") || line.startsWith("platform") || line.startsWith("finish")){
-                    serializedObjects.add(line);
+                if(line.startsWith("player")){
+                    sos.add(new PlayerObject(getArgsFromLine(line)));
+                }
+                else if(line.startsWith("platform")){
+                    sos.add(new PlatformObject(getArgsFromLine(line)));
+
+                }
+                else if(line.startsWith("finish")) {
+                    sos.add(new FinishObject(getArgsFromLine(line)));
                 }
                 else if(i == 0){
                     width = Float.parseFloat(line);
@@ -54,7 +66,7 @@ public class LevelLoaderSaver {
 
             in.close();
 
-            return new Level(width,height,serializedObjects);
+            return new Level(width,height,sos);
 
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
@@ -63,5 +75,14 @@ public class LevelLoaderSaver {
         }
 
         return null;
+    }
+
+    public static ArrayList<String> getArgsFromLine(String line){
+        String[] split = line.split(" ");
+
+        ArrayList<String> args = new ArrayList( Arrays.asList( split ) );
+
+        args.remove(0);
+        return args;
     }
 }

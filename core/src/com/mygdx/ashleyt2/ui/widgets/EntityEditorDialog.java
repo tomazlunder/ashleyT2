@@ -1,17 +1,11 @@
 package com.mygdx.ashleyt2.ui.widgets;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.mygdx.ashleyt2.components.SerializableComponent;
 
 public class EntityEditorDialog extends Dialog {
@@ -52,12 +46,12 @@ public class EntityEditorDialog extends Dialog {
         SerializableComponent serializableComponent = serializableMapper.get(entity);
 
         table.row();
-        Label label = new Label(serializableComponent.name, skin);
+        Label label = new Label(serializableComponent.serializableObject.name, skin);
         table.add(label).expandX().fillX();
 
         textFields = new ArrayList<TextField>();
         TextField textField;
-        for (String data : serializableComponent.data) {
+        for (String data : serializableComponent.serializableObject.getDataList()) {
             table.row();
             textField = new TextField(data, skin);
             textFields.add(textField);
@@ -67,18 +61,19 @@ public class EntityEditorDialog extends Dialog {
         this.getContentTable().add(table).maxHeight(300).expand().fill();
     }
 
-    public String generateCommand(){
-        String command = "";
+    //Retruns success status
+    public boolean changeSOwithArgs() {
+        ArrayList<String> args = new ArrayList<String>();
         SerializableComponent serializableComponent = serializableMapper.get(entity);
 
-        command += serializableComponent.name;
-
-        for(TextField textField: textFields){
-            command += " ";
-            command += textField.getText();
+        for (TextField textField : textFields) {
+            args.add(textField.getText());
         }
 
-        return command;
+        boolean success = serializableComponent.serializableObject.init(args);
+        if(success){
+            serializableComponent.changed = true;
+        }
+        return success;
     }
-
 }

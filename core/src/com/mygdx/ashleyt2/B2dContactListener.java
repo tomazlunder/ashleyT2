@@ -1,15 +1,11 @@
 package com.mygdx.ashleyt2;
 
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.mygdx.ashleyt2.components.SerializableComponent;
 import com.mygdx.ashleyt2.ui.screens.GameScreen;
-import com.mygdx.ashleyt2.ui.screens.MainMenuScreen;
 
 public class B2dContactListener implements ContactListener {
 

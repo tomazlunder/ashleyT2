@@ -1,10 +1,11 @@
-package com.mygdx.ashleyt2.level.editor;
+package com.mygdx.ashleyt2.systems.editor;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
@@ -12,7 +13,7 @@ import com.mygdx.ashleyt2.components.SerializableComponent;
 import com.mygdx.ashleyt2.ui.screens.LevelEditorScreen;
 import com.mygdx.ashleyt2.ui.widgets.EntityEditorDialog;
 
-public class EditorSelectSystem extends EntitySystem {
+public class EditorEntitySelectSystem extends EntitySystem {
 
     private ImmutableArray<Entity> entities;
 
@@ -22,27 +23,25 @@ public class EditorSelectSystem extends EntitySystem {
     private float pixels_per_meter;
     private float pixels_to_meters;
 
-    Engine engine;
     LevelEditorScreen levelEditorScreen;
 
     Stage stage;
     Skin skin;
 
-    public EditorSelectSystem(Stage stage, Skin skin, float pixels_per_meter, LevelEditorScreen levelEditorScreen) {
+    public EditorEntitySelectSystem(Stage stage, Skin skin, float pixels_per_meter, LevelEditorScreen levelEditorScreen) {
         this.pixels_per_meter = pixels_per_meter;
         this.pixels_to_meters = 1.0f / (float) pixels_per_meter;
 
         this.levelEditorScreen = levelEditorScreen;
         this.stage = stage;
         this.skin = skin;
+
     }
 
 
     @Override
     public void addedToEngine(Engine engine) {
-        engine = engine;
         entities = engine.getEntitiesFor(Family.all(SerializableComponent.class, B2dBodyComponent.class).get());
-
     }
 
     @Override
@@ -51,7 +50,7 @@ public class EditorSelectSystem extends EntitySystem {
         //levelEditorScreen.toRemove = new ArrayList<Entity>();
 
         if(Gdx.input.justTouched() && !levelEditorScreen.dialogOpen) {
-            for (Entity e : entities) {
+            for (final Entity e : entities) {
                 bodyComponent = bodyMapper.get(e);
 
                 for (Fixture f : bodyComponent.body.getFixtureList()) {
@@ -66,8 +65,7 @@ public class EditorSelectSystem extends EntitySystem {
                             @Override
                             protected void result(Object object) {
                                 if (object.equals("OK")) {
-                                    levelEditorScreen.toRemove.add(this.entity);
-                                    levelEditorScreen.toExecute.add(this.generateCommand());
+                                    changeSOwithArgs();
                                 }
                                 remove();
                                 levelEditorScreen.dialogOpen = false;

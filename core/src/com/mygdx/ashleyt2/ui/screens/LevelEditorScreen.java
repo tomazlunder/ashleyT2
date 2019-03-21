@@ -16,11 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
-import com.mygdx.ashleyt2.level.EntityFactory;
 import com.mygdx.ashleyt2.level.Level;
-import com.mygdx.ashleyt2.level.editor.EditorSelectSystem;
-import com.mygdx.ashleyt2.level.util.EntitySerializer;
+import com.mygdx.ashleyt2.systems.editor.EditorEntityUpdaterSystem;
+import com.mygdx.ashleyt2.systems.editor.EditorEntitySelectSystem;
 import com.mygdx.ashleyt2.input.InputHandler;
+import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
 import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
 
@@ -43,8 +43,7 @@ public class LevelEditorScreen implements Screen {
 
 
     public ArrayList<Entity> toRemove;
-    public ArrayList<String> toExecute;
-    private EntityFactory entityFactory;
+    public ArrayList<SerializableObject> toAdd;
 
     private Viewport viewport;
 
@@ -83,15 +82,16 @@ public class LevelEditorScreen implements Screen {
         skin = new Skin(Gdx.files.internal("ui/skins/default/skin.json"), atlas);
 
         //Add systems
+        engine.addSystem(new EditorEntityUpdaterSystem(this));
         engine.addSystem(new RenderingSystem(game.batch));
-        engine.addSystem(new EditorSelectSystem(stage,skin,pixels_per_meter, this));
+        engine.addSystem(new EditorEntitySelectSystem(stage,skin,pixels_per_meter, this));
 
         //Load entities
         level.loadSerializedObjects(engine,world,pixels_per_meter);
 
         toRemove = new ArrayList<Entity>();
-        toExecute = new ArrayList<String>();
-        entityFactory = new EntityFactory(engine,world,pixels_per_meter);
+        toAdd = new ArrayList<SerializableObject>();
+        //entityFactory = new EntityFactory(engine,world,pixels_per_meter);
         dialogOpen = false;
 
         this.level = level;
@@ -116,14 +116,6 @@ public class LevelEditorScreen implements Screen {
         game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
         game.batch.end();
 
-        if(toExecute.size() > 0){
-            for(String s : toExecute){
-                entityFactory.parseEntityFromString(s);
-            }
-        }
-        toExecute = new ArrayList<String>();
-
-
         InputHandler.updateStates();
         game.batch.begin();
         engine.update(delta);
@@ -145,10 +137,19 @@ public class LevelEditorScreen implements Screen {
                 engine.removeEntity(e);
             }
         }
+
         toRemove = new ArrayList<Entity>();
 
         stage.act();
         stage.draw();
+
+        if(toAdd.size() > 0){
+            for(SerializableObject so : toAdd){
+                //entityFactory.parseEntityFromString(s);
+                so.addToEngine(engine,world,pixels_per_meter);
+            }
+        }
+        toAdd = new ArrayList<SerializableObject>();
 
     }
 
