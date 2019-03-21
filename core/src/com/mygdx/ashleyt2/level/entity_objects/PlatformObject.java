@@ -18,6 +18,8 @@ public class PlatformObject extends SerializableObject {
     public float w;
     public float h;
 
+    public int argLen = 4;
+
     public PlatformObject(ArrayList<String> args) {
         super(args);
         this.name = "platform";

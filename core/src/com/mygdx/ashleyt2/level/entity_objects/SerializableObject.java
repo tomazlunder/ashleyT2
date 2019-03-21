@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public abstract class SerializableObject {
     public SerializableObjectType type;
     public String name;
+    public int argLen;
 
     //INIT WITH A LIST OF STRING ARGS... COMMON FOR ALL SERIALIZED OBJECT
     //Each SO can also have its own constructor

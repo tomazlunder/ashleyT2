@@ -16,6 +16,8 @@ public class FinishObject extends SerializableObject {
     public float w;
     public float h;
 
+    public int argLen = 4;
+
     public FinishObject(ArrayList<String> args) {
         super(args);
         this.name = "finish";

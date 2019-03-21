@@ -65,8 +65,14 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        InputHandler.updateStates();
+
         Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+
+        //NORMAL:
         //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //ANTI ALIASING:
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
         camera.update();
@@ -74,11 +80,6 @@ public class GameScreen implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
-        game.batch.end();
-
-
-        InputHandler.updateStates();
-        game.batch.begin();
         engine.update(delta);
         game.batch.end();
 

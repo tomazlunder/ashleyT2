@@ -28,6 +28,7 @@ public class EntityEditorDialog extends Dialog {
         this.getCell(getButtonTable()).expandX().fill();
         this.getButtonTable().defaults().expandX().fill();
 
+        this.button("Remove", "Remove");
         this.button("Cancel", "Cancel");
         this.button("OK", "OK");
 
@@ -75,5 +76,12 @@ public class EntityEditorDialog extends Dialog {
             serializableComponent.changed = true;
         }
         return success;
+    }
+
+    //Retruns success status
+    public void removeEntity() {
+        SerializableComponent serializableComponent = serializableMapper.get(entity);
+
+        serializableComponent.delete = true;
     }
 }

@@ -16,20 +16,25 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
+import com.mygdx.ashleyt2.level.Constants;
 import com.mygdx.ashleyt2.level.Level;
+import com.mygdx.ashleyt2.level.entity_objects.FinishObject;
+import com.mygdx.ashleyt2.level.entity_objects.PlatformObject;
+import com.mygdx.ashleyt2.level.entity_objects.PlayerObject;
 import com.mygdx.ashleyt2.systems.editor.EditorEntityUpdaterSystem;
 import com.mygdx.ashleyt2.systems.editor.EditorEntitySelectSystem;
 import com.mygdx.ashleyt2.input.InputHandler;
 import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
 import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
+import com.mygdx.ashleyt2.ui.widgets.EntityCreatorDialog;
 
+import javax.swing.text.View;
 import java.util.ArrayList;
 
 public class LevelEditorScreen implements Screen {
     //NEEDED FOR EVERY (BOX2D) GAME
     private final GameClass game;
-
 
     private int pixels_per_meter;
     private float pixels_to_meters;
@@ -37,23 +42,22 @@ public class LevelEditorScreen implements Screen {
     private Engine engine;
     private World world;
 
-    private Vector2 gravity = new Vector2(0f,-17.8f);
-
     private OrthographicCamera camera;
 
 
+    /**
+     * LEVEL EDITOR SPECIFICS
+     */
+    private Level level;
+
+    //Objects to be added/removed
     public ArrayList<Entity> toRemove;
     public ArrayList<SerializableObject> toAdd;
 
-    private Viewport viewport;
-
-    Stage stage;
+    //For editing UI
+    private Stage stage;
     private Skin skin;
     private TextureAtlas atlas;
-
-    Level level;
-
-    public Entity selectedEntity;
 
     public boolean dialogOpen;
 
@@ -61,20 +65,19 @@ public class LevelEditorScreen implements Screen {
 
     public LevelEditorScreen(final GameClass game, Level level) {
         this.game = game;
+        this.level = level;
+
+
 
         //Create basic components
         this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/level.width);
         this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
 
         this.engine = new Engine();
-        world = new World(gravity, true);
-
-        //camera = new OrthographicCamera();
-        //camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        world = new World(Constants.gravity, true);
 
         camera = new OrthographicCamera();
-        //camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.apply();
 
         atlas = new TextureAtlas("ui/skins/default/uiskin.atlas");
@@ -91,7 +94,6 @@ public class LevelEditorScreen implements Screen {
 
         toRemove = new ArrayList<Entity>();
         toAdd = new ArrayList<SerializableObject>();
-        //entityFactory = new EntityFactory(engine,world,pixels_per_meter);
         dialogOpen = false;
 
         this.level = level;
@@ -114,10 +116,6 @@ public class LevelEditorScreen implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
-        game.batch.end();
-
-        InputHandler.updateStates();
-        game.batch.begin();
         engine.update(delta);
         game.batch.end();
 
@@ -151,6 +149,29 @@ public class LevelEditorScreen implements Screen {
         }
         toAdd = new ArrayList<SerializableObject>();
 
+
+        if(!dialogOpen&& Gdx.input.justTouched()){
+            dialogOpen = true;
+            Gdx.input.setInputProcessor(stage);
+            EntityCreatorDialog edit = new EntityCreatorDialog("Create window", skin, getMousePosInGameWorld(), this) {
+                @Override
+                protected void result(Object object) {
+                    if (object.equals("OK")) {
+                        if(whatToCreate.equals("player")){
+                            toAdd.add(new PlayerObject(clickPos.x, clickPos.y));
+                        } else if (whatToCreate.equals("platform")) {
+                            toAdd.add(new PlatformObject(clickPos.x, clickPos.y, 2, 2));
+                        }
+                        else if (whatToCreate.equals("finish")){
+                            toAdd.add(new FinishObject(clickPos.x, clickPos.y,2,2 ));
+                        }
+                    }
+                    remove();
+                    dialogOpen = false;
+                }
+            };
+            edit.show(stage);
+        }
     }
 
     @Override

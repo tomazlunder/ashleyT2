@@ -56,7 +56,6 @@ public class EditorEntitySelectSystem extends EntitySystem {
                 for (Fixture f : bodyComponent.body.getFixtureList()) {
                     if ( f.testPoint(getMousePosInGameWorld())){
                         System.out.println("ENTITY SELECTED");
-                        //levelEditorScreen.toRemove.add(e);
 
                         Gdx.input.setInputProcessor(stage);
                         levelEditorScreen.dialogOpen = true;
@@ -66,6 +65,9 @@ public class EditorEntitySelectSystem extends EntitySystem {
                             protected void result(Object object) {
                                 if (object.equals("OK")) {
                                     changeSOwithArgs();
+                                }
+                                else if(object.equals("Remove")){
+                                    removeEntity();
                                 }
                                 remove();
                                 levelEditorScreen.dialogOpen = false;

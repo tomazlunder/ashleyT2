@@ -16,6 +16,8 @@ public class PlayerObject extends SerializableObject {
     public float x;
     public float y;
 
+    public int argLen = 2;
+
     public PlayerObject(ArrayList<String> args) {
         super(args);
         this.name = "player";
