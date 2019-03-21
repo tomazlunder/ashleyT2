@@ -18,11 +18,15 @@ public class RenderingSystem extends SortedIteratingSystem {
     //Sprite batch
     private SpriteBatch batch;
 
+    private float pixels_per_meter;
+
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch){
+    public RenderingSystem(SpriteBatch batch, float pixels_per_meter){
         super(Family.all(TransformComponent.class,TextureComponent.class).get(), new ZComparator());
         this.batch = batch;
+
+        this.pixels_per_meter = pixels_per_meter;
     }
 
     @Override
@@ -31,12 +35,12 @@ public class RenderingSystem extends SortedIteratingSystem {
         TransformComponent transformComponent = transformMap.get(entity);
 
         batch.draw(textureComponent.textureRegion,
-                transformComponent.position.x - transformComponent.width/2,
-                transformComponent.position.y-transformComponent.height/2,
+                transformComponent.position.x * pixels_per_meter - (transformComponent.width * pixels_per_meter)/2,
+                transformComponent.position.y * pixels_per_meter - (transformComponent.height * pixels_per_meter)/2,
                 textureComponent.textureRegion.getRegionWidth()/2,
                 textureComponent.textureRegion.getRegionHeight()/2,
-                transformComponent.width,
-                transformComponent.height,
+                transformComponent.width * pixels_per_meter,
+                transformComponent.height * pixels_per_meter,
                 transformComponent.scale.x,
                 transformComponent.scale.y,
                 transformComponent.rotation);

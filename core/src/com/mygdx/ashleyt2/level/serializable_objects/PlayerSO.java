@@ -1,4 +1,4 @@
-package com.mygdx.ashleyt2.level.entity_objects;
+package com.mygdx.ashleyt2.level.serializable_objects;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -12,20 +12,21 @@ import com.mygdx.ashleyt2.components.SerializableComponent;
 
 import java.util.ArrayList;
 
-public class PlayerObject extends SerializableObject {
+public class PlayerSO extends SerializableObject {
     public float x;
     public float y;
 
     public int argLen = 2;
 
-    public PlayerObject(ArrayList<String> args) {
+    public PlayerSO(ArrayList<String> args) {
         super(args);
         this.name = "player";
         this.type = SerializableObjectType.PLAYER;
     }
 
-    public PlayerObject(float x, float y){
+    public PlayerSO(float x, float y){
         super(new ArrayList<String>());
+        this.name = "player";
         this.type = SerializableObjectType.PLAYER;
 
         this.x = x;
@@ -44,7 +45,7 @@ public class PlayerObject extends SerializableObject {
         }
     }
 
-    public void addToEngine(Engine engine, World world, float pixels_per_meter){
+    public void addToEngine(Engine engine, World world){
         //create entity
         Entity entity = new Entity();
 
@@ -53,8 +54,8 @@ public class PlayerObject extends SerializableObject {
         serializableComponent.serializableObject = this;
 
         //Transform component (transform positions into world coordinates)
-        Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
-        TransformComponent transformComponent = new TransformComponent(position,Constants.playerRadius*2*pixels_per_meter, Constants.playerRadius*2*pixels_per_meter);
+        Vector3 position = new Vector3(x,y,1);
+        TransformComponent transformComponent = new TransformComponent(position,Constants.playerRadius*2, Constants.playerRadius*2);
 
         //Box2dBody component
         BodyDef bodyDef = new BodyDef();

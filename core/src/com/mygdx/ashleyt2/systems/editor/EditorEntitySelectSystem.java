@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.ashleyt2.components.B2dBodyComponent;
 import com.mygdx.ashleyt2.components.SerializableComponent;
+import com.mygdx.ashleyt2.input.InputHandler;
 import com.mygdx.ashleyt2.ui.screens.LevelEditorScreen;
 import com.mygdx.ashleyt2.ui.widgets.EntityEditorDialog;
 
@@ -20,24 +21,16 @@ public class EditorEntitySelectSystem extends EntitySystem {
     private ComponentMapper<SerializableComponent> serializableMapper = ComponentMapper.getFor(SerializableComponent.class);
     private ComponentMapper<B2dBodyComponent> bodyMapper = ComponentMapper.getFor(B2dBodyComponent.class);
 
-    private float pixels_per_meter;
-    private float pixels_to_meters;
-
     LevelEditorScreen levelEditorScreen;
 
     Stage stage;
     Skin skin;
 
-    public EditorEntitySelectSystem(Stage stage, Skin skin, float pixels_per_meter, LevelEditorScreen levelEditorScreen) {
-        this.pixels_per_meter = pixels_per_meter;
-        this.pixels_to_meters = 1.0f / (float) pixels_per_meter;
-
+    public EditorEntitySelectSystem(Stage stage, Skin skin, LevelEditorScreen levelEditorScreen) {
         this.levelEditorScreen = levelEditorScreen;
         this.stage = stage;
         this.skin = skin;
-
     }
-
 
     @Override
     public void addedToEngine(Engine engine) {
@@ -47,14 +40,13 @@ public class EditorEntitySelectSystem extends EntitySystem {
     @Override
     public void update(float deltaTime) {
         B2dBodyComponent bodyComponent;
-        //levelEditorScreen.toRemove = new ArrayList<Entity>();
 
         if(Gdx.input.justTouched() && !levelEditorScreen.dialogOpen) {
             for (final Entity e : entities) {
                 bodyComponent = bodyMapper.get(e);
 
                 for (Fixture f : bodyComponent.body.getFixtureList()) {
-                    if ( f.testPoint(getMousePosInGameWorld())){
+                    if ( f.testPoint(InputHandler.getMousePosInGameWorld())){
                         System.out.println("ENTITY SELECTED");
 
                         Gdx.input.setInputProcessor(stage);
@@ -80,9 +72,5 @@ public class EditorEntitySelectSystem extends EntitySystem {
                 }
             }
         }
-    }
-
-    Vector2 getMousePosInGameWorld() {
-        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
     }
 }

@@ -1,6 +1,5 @@
 package com.mygdx.ashleyt2.ui.widgets;
 
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.mygdx.ashleyt2.level.entity_objects.PlayerObject;
 import com.mygdx.ashleyt2.ui.screens.LevelEditorScreen;
 
 import java.util.ArrayList;

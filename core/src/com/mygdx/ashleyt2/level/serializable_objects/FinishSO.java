@@ -1,7 +1,9 @@
-package com.mygdx.ashleyt2.level.entity_objects;
+package com.mygdx.ashleyt2.level.serializable_objects;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.mygdx.ashleyt2.components.*;
@@ -9,7 +11,7 @@ import com.mygdx.ashleyt2.components.SerializableComponent;
 
 import java.util.ArrayList;
 
-public class FinishObject extends SerializableObject {
+public class FinishSO extends SerializableObject {
     public float x;
     public float y;
 
@@ -18,14 +20,15 @@ public class FinishObject extends SerializableObject {
 
     public int argLen = 4;
 
-    public FinishObject(ArrayList<String> args) {
+    public FinishSO(ArrayList<String> args) {
         super(args);
         this.name = "finish";
         this.type = SerializableObjectType.FINISH;
     }
 
-    public FinishObject(float x, float y, float w, float h){
+    public FinishSO(float x, float y, float w, float h){
         super(new ArrayList<String>());
+        this.name = "finish";
         this.type = SerializableObjectType.PLAYER;
 
         this.x = x;
@@ -51,7 +54,7 @@ public class FinishObject extends SerializableObject {
     }
 
     @Override
-    public void addToEngine(Engine engine, World world, float pixels_per_meter){
+    public void addToEngine(Engine engine, World world){
         //create Entity
         Entity entity = new Entity();
 
@@ -60,8 +63,8 @@ public class FinishObject extends SerializableObject {
         serializableComponent.serializableObject = this;
 
         //Transform component (transform positions into world coordinates)
-        Vector3 position = new Vector3(x*pixels_per_meter,y*pixels_per_meter,1);
-        TransformComponent transformComponent = new TransformComponent(position,w*pixels_per_meter, h*pixels_per_meter);
+        Vector3 position = new Vector3(x,y,1);
+        TransformComponent transformComponent = new TransformComponent(position,w, h);
 
 
         //Box2dBody component
@@ -82,10 +85,15 @@ public class FinishObject extends SerializableObject {
         body.createFixture(fixtureDef);
         B2dBodyComponent bodyComponent = new B2dBodyComponent(body);
 
+        Texture blackTexture = new Texture("colors/red.png");
+        TextureRegion tr = new TextureRegion(blackTexture);
+        TextureComponent textureComponent = new TextureComponent(tr);
+
         //Add all components to entity
         entity.add(serializableComponent)
                 .add(transformComponent)
-                .add(bodyComponent);
+                .add(bodyComponent)
+                .add(textureComponent);
 
         //Add entity to engine
         engine.addEntity(entity);

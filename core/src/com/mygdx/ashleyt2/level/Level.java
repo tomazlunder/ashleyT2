@@ -7,7 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.physics.box2d.World;
 import com.mygdx.ashleyt2.components.SerializableComponent;
-import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
+import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 
 import java.util.ArrayList;
 
@@ -24,9 +24,9 @@ public class Level {
         this.serializableObjects = new ArrayList<SerializableObject>(serializableObjects);
     }
 
-    public void loadSerializedObjects(Engine engine, World world, float pixels_per_meter){
+    public void loadSerializedObjects(Engine engine, World world){
         for(SerializableObject so : serializableObjects) {
-            so.addToEngine(engine,world,pixels_per_meter);
+            so.addToEngine(engine,world);
         }
     }
 

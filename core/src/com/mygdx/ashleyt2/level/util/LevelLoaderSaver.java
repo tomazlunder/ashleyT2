@@ -3,10 +3,10 @@ package com.mygdx.ashleyt2.level.util;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.ashleyt2.level.Level;
-import com.mygdx.ashleyt2.level.entity_objects.FinishObject;
-import com.mygdx.ashleyt2.level.entity_objects.PlatformObject;
-import com.mygdx.ashleyt2.level.entity_objects.PlayerObject;
-import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
+import com.mygdx.ashleyt2.level.serializable_objects.FinishSO;
+import com.mygdx.ashleyt2.level.serializable_objects.PlatformSO;
+import com.mygdx.ashleyt2.level.serializable_objects.PlayerSO;
+import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -47,14 +47,14 @@ public class LevelLoaderSaver {
             int i = 0;
             while((line = in.readLine()) != null){
                 if(line.startsWith("player")){
-                    sos.add(new PlayerObject(getArgsFromLine(line)));
+                    sos.add(new PlayerSO(getArgsFromLine(line)));
                 }
                 else if(line.startsWith("platform")){
-                    sos.add(new PlatformObject(getArgsFromLine(line)));
+                    sos.add(new PlatformSO(getArgsFromLine(line)));
 
                 }
                 else if(line.startsWith("finish")) {
-                    sos.add(new FinishObject(getArgsFromLine(line)));
+                    sos.add(new FinishSO(getArgsFromLine(line)));
                 }
                 else if(i == 0){
                     width = Float.parseFloat(line);

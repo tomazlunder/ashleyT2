@@ -16,20 +16,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.ashleyt2.GameClass;
+import com.mygdx.ashleyt2.input.InputHandler;
 import com.mygdx.ashleyt2.level.Constants;
 import com.mygdx.ashleyt2.level.Level;
-import com.mygdx.ashleyt2.level.entity_objects.FinishObject;
-import com.mygdx.ashleyt2.level.entity_objects.PlatformObject;
-import com.mygdx.ashleyt2.level.entity_objects.PlayerObject;
+import com.mygdx.ashleyt2.level.serializable_objects.FinishSO;
+import com.mygdx.ashleyt2.level.serializable_objects.PlatformSO;
+import com.mygdx.ashleyt2.level.serializable_objects.PlayerSO;
 import com.mygdx.ashleyt2.systems.editor.EditorEntityUpdaterSystem;
 import com.mygdx.ashleyt2.systems.editor.EditorEntitySelectSystem;
-import com.mygdx.ashleyt2.input.InputHandler;
-import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
+import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 import com.mygdx.ashleyt2.level.util.LevelLoaderSaver;
 import com.mygdx.ashleyt2.systems.RenderingSystem;
 import com.mygdx.ashleyt2.ui.widgets.EntityCreatorDialog;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 
 public class LevelEditorScreen implements Screen {
@@ -86,17 +85,19 @@ public class LevelEditorScreen implements Screen {
 
         //Add systems
         engine.addSystem(new EditorEntityUpdaterSystem(this));
-        engine.addSystem(new RenderingSystem(game.batch));
-        engine.addSystem(new EditorEntitySelectSystem(stage,skin,pixels_per_meter, this));
+        engine.addSystem(new RenderingSystem(game.batch, pixels_per_meter));
+        engine.addSystem(new EditorEntitySelectSystem(stage,skin, this));
 
         //Load entities
-        level.loadSerializedObjects(engine,world,pixels_per_meter);
+        level.loadSerializedObjects(engine,world);
 
         toRemove = new ArrayList<Entity>();
         toAdd = new ArrayList<SerializableObject>();
         dialogOpen = false;
 
         this.level = level;
+
+        InputHandler.pixels_to_meters = pixels_to_meters;
     }
 
 
@@ -144,7 +145,7 @@ public class LevelEditorScreen implements Screen {
         if(toAdd.size() > 0){
             for(SerializableObject so : toAdd){
                 //entityFactory.parseEntityFromString(s);
-                so.addToEngine(engine,world,pixels_per_meter);
+                so.addToEngine(engine,world);
             }
         }
         toAdd = new ArrayList<SerializableObject>();
@@ -158,12 +159,12 @@ public class LevelEditorScreen implements Screen {
                 protected void result(Object object) {
                     if (object.equals("OK")) {
                         if(whatToCreate.equals("player")){
-                            toAdd.add(new PlayerObject(clickPos.x, clickPos.y));
+                            toAdd.add(new PlayerSO(clickPos.x, clickPos.y));
                         } else if (whatToCreate.equals("platform")) {
-                            toAdd.add(new PlatformObject(clickPos.x, clickPos.y, 2, 2));
+                            toAdd.add(new PlatformSO(clickPos.x, clickPos.y, 2, 2));
                         }
                         else if (whatToCreate.equals("finish")){
-                            toAdd.add(new FinishObject(clickPos.x, clickPos.y,2,2 ));
+                            toAdd.add(new FinishSO(clickPos.x, clickPos.y,2,2 ));
                         }
                     }
                     remove();

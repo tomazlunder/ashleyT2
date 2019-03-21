@@ -1,7 +1,7 @@
 package com.mygdx.ashleyt2.components;
 
 import com.badlogic.ashley.core.Component;
-import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
+import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 
 public class SerializableComponent implements Component {
     public SerializableObject serializableObject;

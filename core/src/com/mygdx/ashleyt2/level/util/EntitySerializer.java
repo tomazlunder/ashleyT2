@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.mygdx.ashleyt2.level.entity_objects.SerializableObject;
+import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 import com.mygdx.ashleyt2.components.SerializableComponent;
 
 import java.util.ArrayList;

@@ -2,6 +2,7 @@ package com.mygdx.ashleyt2.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.ashleyt2.input.states.AdminInputState;
 import com.mygdx.ashleyt2.input.states.PlayerInputState;
 
@@ -11,6 +12,12 @@ public class InputHandler {
     public static PlayerInputState playerInputState;
 
     public static PlayerInputState prevPlayerInputState;
+
+    public static float pixels_to_meters = 100;
+
+    public static Vector2 getMousePosInGameWorld() {
+        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
+    }
 
 
     public static void updateStates(){

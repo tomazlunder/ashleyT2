@@ -47,14 +47,15 @@ public class GameScreen implements Screen {
 
         //Add systems
         //engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
-        engine.addSystem(new B2dPhysicsSystem(world, pixels_per_meter));
-        engine.addSystem(new RenderingSystem(game.batch));
-        engine.addSystem(new PlayerControlSystem(pixels_per_meter));
+        engine.addSystem(new B2dPhysicsSystem(world));
+        engine.addSystem(new RenderingSystem(game.batch, pixels_per_meter));
+        engine.addSystem(new PlayerControlSystem());
 
         //Load entities
-        level.loadSerializedObjects(engine,world,pixels_per_meter);
+        level.loadSerializedObjects(engine,world);
 
         toMenu = false;
+        InputHandler.pixels_to_meters = pixels_to_meters;
     }
 
 

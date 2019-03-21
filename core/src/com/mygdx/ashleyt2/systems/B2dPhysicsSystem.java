@@ -24,18 +24,12 @@ public class B2dPhysicsSystem extends IteratingSystem {
     private ComponentMapper<B2dBodyComponent> bodyMap = ComponentMapper.getFor(B2dBodyComponent.class);
     private ComponentMapper<TransformComponent> transformMap = ComponentMapper.getFor(TransformComponent.class);
 
-    float pixels_per_meter;
-    float pixels_to_meters;
-
     @SuppressWarnings("unchecked")
-    public B2dPhysicsSystem(World world, float pixels_per_meter) {
+    public B2dPhysicsSystem(World world) {
         // System for all Entities that have B2dBodyComponent and TransformComponent
         super(Family.all(B2dBodyComponent.class, TransformComponent.class).get());
         this.world = world;
         this.bodiesQueue = new Array<Entity>();
-
-        this.pixels_per_meter = pixels_per_meter;
-        this.pixels_to_meters = 1.0f / pixels_per_meter;
     }
 
     @Override
@@ -57,7 +51,7 @@ public class B2dPhysicsSystem extends IteratingSystem {
                 Vector2 position = bodyComponent.body.getPosition().cpy();
                 // update our transform to match body position
 
-                position.scl(pixels_per_meter);
+                //position.scl(pixels_per_meter);
                 transformComponent.position = new Vector3(position.x, position.y, transformComponent.position.z);
                 transformComponent.rotation = bodyComponent.body.getAngle() * MathUtils.radiansToDegrees;
             }

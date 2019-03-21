@@ -20,12 +20,7 @@ public class PlayerControlSystem extends EntitySystem {
     private ComponentMapper<PlayerComponent> pm = ComponentMapper.getFor(PlayerComponent.class);
     private ComponentMapper<B2dBodyComponent> vm = ComponentMapper.getFor(B2dBodyComponent.class);
 
-    private float pixels_per_meter;
-    private float pixels_to_meters;
-
-    public PlayerControlSystem(float pixels_per_meter){
-        this.pixels_per_meter = pixels_per_meter;
-        this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
+    public PlayerControlSystem(){
     }
 
 
@@ -50,6 +45,7 @@ public class PlayerControlSystem extends EntitySystem {
                     playerComponent.playerState = PlayerComponent.PlayerState.GROUNDED;
                     playerComponent.velocity = new Vector2(bodyComponent.body.getLinearVelocity().x,0);
                     bodyComponent.body.setLinearVelocity(bodyComponent.body.getLinearVelocity().x,0);
+                    System.out.println("Grounded");
                 }
 
                 //air to BULLET
@@ -62,6 +58,12 @@ public class PlayerControlSystem extends EntitySystem {
             else if(playerComponent.playerState == PlayerComponent.PlayerState.GROUNDED && bodyComponent.body.getLinearVelocity().y != 0){
                 playerComponent.prevPlayerState = playerComponent.playerState;
                 playerComponent.playerState = PlayerComponent.PlayerState.AIR;
+            }
+
+            if(playerComponent.prevFramePlayerState == playerComponent.playerState){
+                playerComponent.timeInState += deltaTime;
+            } else {
+                playerComponent.timeInState = 0;
             }
 
             //Handle reactions to inputs based on player state
@@ -77,7 +79,6 @@ public class PlayerControlSystem extends EntitySystem {
 
     //STATE HANDLERS
     private void groundedHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
-        System.out.println("Grounded");
         Vector2 velocity = new Vector2(playerComponent.velocity);
         velocity.limit(Constants.playerMaxHorizontalVelocity);
 
@@ -126,8 +127,6 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void airHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
-        System.out.println("Air");
-
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
         if(velocity.x > 0){
             velocity.x = Math.max(0, velocity.x - Constants.playerAirHorizontalDec);
@@ -140,7 +139,11 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void bulletHandler(float deltaTime, PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
-        System.out.println("Bullet");
+        //TODO: TEST AND REFINE THIS (Curenty time very big)
+        if(playerComponent.timeInState > 3f){
+            System.out.println("Max bullet time");
+            bulletToAir(playerComponent, bodyComponent);
+        }
 
         //InputHandler.playerInputState.downPressed &&
         if( playerComponent.bounced){
@@ -193,6 +196,8 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void airToBullet2(PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        System.out.println("Bullet");
+
         playerComponent.prevPlayerState = playerComponent.playerState;
         playerComponent.playerState = PlayerComponent.PlayerState.BULLET;
 
@@ -208,10 +213,9 @@ public class PlayerControlSystem extends EntitySystem {
         bodyComponent.body.setGravityScale(0);
         bodyComponent.body.setBullet(true);
 
-        Vector2 velocity = getMousePosInGameWorld();
+        Vector2 velocity = InputHandler.getMousePosInGameWorld();
         velocity.sub(bodyComponent.body.getPosition());
         velocity.setLength(Constants.playerBulletSpeed);
-
 
 
         bodyComponent.body.setLinearVelocity(velocity);
@@ -220,6 +224,7 @@ public class PlayerControlSystem extends EntitySystem {
     }
 
     private void bulletToAir(PlayerComponent playerComponent, B2dBodyComponent bodyComponent){
+        System.out.println("Air");
         //Set new state
         playerComponent.prevPlayerState = playerComponent.playerState;
         playerComponent.playerState = PlayerComponent.PlayerState.AIR;
@@ -236,11 +241,9 @@ public class PlayerControlSystem extends EntitySystem {
 
         //Set the new velocity
         Vector2 velocity = new Vector2(bodyComponent.body.getLinearVelocity());
-        velocity.setLength(Constants.playerAfterBounceSpeed);
+        //velocity.setLength(Constants.playerAfterBounceSpeed);
+        velocity.scl(0.5f);
         bodyComponent.body.setLinearVelocity(velocity);
     }
 
-    Vector2 getMousePosInGameWorld() {
-        return new Vector2(Gdx.input.getX()*pixels_to_meters, (Gdx.graphics.getHeight()-Gdx.input.getY())*pixels_to_meters) ;
-    }
 }

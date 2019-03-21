@@ -84,12 +84,13 @@ public class AdminMenuScreen implements Screen {
 
         mainTable.columnDefaults(6);
         //mainTable.debug();
-
+/*
         mainTable.add().colspan(1).expandX();
         mainTable.add(titleLabel).colspan(4).center().bottom().expandX().expandY();
         mainTable.add().colspan(1).expandX();
 
         mainTable.row().fillX();
+       */
         mainTable.add(emptyLabel).colspan(6).expandX().expandY();
 
         mainTable.row().fillX();
@@ -118,7 +119,7 @@ public class AdminMenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+        Gdx.gl.glClearColor(0, 0.2f, 0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();

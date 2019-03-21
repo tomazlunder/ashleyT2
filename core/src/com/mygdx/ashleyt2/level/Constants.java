@@ -20,7 +20,7 @@ public class Constants {
 
     public static float playerAfterBounceSpeed = 12f;
 
-    public static float playerAirHorizontalDec = 0.01f;
+    public static float playerAirHorizontalDec = 0.03f;
     public static float playerBulletSpeed = 20f;
 
     public static String playerAtlasRegionKey = "player";
