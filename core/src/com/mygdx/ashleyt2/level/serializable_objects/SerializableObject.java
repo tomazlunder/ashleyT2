@@ -19,7 +19,7 @@ public abstract class SerializableObject {
     public abstract boolean init(ArrayList<String> args);
 
     //Creates and entity and adds it to given engine
-    public abstract void addToEngine(Engine e, World w);
+    public abstract Entity addToEngine(Engine e, World w);
 
     public abstract void updateFromEntiy(Entity e);
 

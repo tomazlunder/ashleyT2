@@ -26,8 +26,8 @@ public class BallSpawnerObject extends SerializableObject {
     }
 
     @Override
-    public void addToEngine(Engine e, World w) {
-
+    public Entity addToEngine(Engine e, World w) {
+        return null;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.mygdx.ashleyt2.ui.screens;
 
 import com.badlogic.ashley.core.Engine;
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -27,6 +29,8 @@ public class GameScreen implements Screen {
     private Engine engine;
     private World world;
 
+    private Entity player;
+
     private OrthographicCamera camera;
 
     public boolean toMenu;
@@ -38,7 +42,7 @@ public class GameScreen implements Screen {
         this.pixels_per_meter = (int) (Gdx.graphics.getWidth()/level.width);
         this.pixels_to_meters = 1.0f/(float) pixels_per_meter;
 
-        this.engine = new Engine();
+        this.engine = new PooledEngine();
         world = new World(Constants.gravity, true);
         world.setContactListener(new B2dContactListener(this));
 
@@ -48,7 +52,7 @@ public class GameScreen implements Screen {
         //Add systems
         //engine.addSystem(new B2dRenderSystem(world,camera, pixels_per_meter));
         engine.addSystem(new B2dPhysicsSystem(world));
-        engine.addSystem(new RenderingSystem(game.batch, pixels_per_meter));
+        engine.addSystem(new RenderingSystem(game.batch, camera,pixels_per_meter));
         engine.addSystem(new PlayerControlSystem());
 
         //Load entities
@@ -76,13 +80,7 @@ public class GameScreen implements Screen {
         //ANTI ALIASING:
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
-
-        game.batch.begin();
-        game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
         engine.update(delta);
-        game.batch.end();
 
         if(toMenu || Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
             game.setScreen(new MainMenuScreen(game));

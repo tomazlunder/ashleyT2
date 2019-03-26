@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -42,6 +43,11 @@ public class LevelEditorScreen implements Screen {
     private World world;
 
     private OrthographicCamera camera;
+
+    public enum EditingMode{
+        NONE, CREATE, SELECT, DRAG
+    }
+    public EditingMode editingMode;
 
 
     /**
@@ -85,7 +91,7 @@ public class LevelEditorScreen implements Screen {
 
         //Add systems
         engine.addSystem(new EditorEntityUpdaterSystem(this));
-        engine.addSystem(new RenderingSystem(game.batch, pixels_per_meter));
+        engine.addSystem(new RenderingSystem(game.batch, camera, pixels_per_meter));
         engine.addSystem(new EditorEntitySelectSystem(stage,skin, this));
 
         //Load entities
@@ -98,6 +104,8 @@ public class LevelEditorScreen implements Screen {
         this.level = level;
 
         InputHandler.pixels_to_meters = pixels_to_meters;
+
+        this.editingMode = EditingMode.NONE;
     }
 
 
@@ -115,9 +123,14 @@ public class LevelEditorScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+
         game.batch.begin();
-        game.font.draw(game.batch, "Game screen ", 100, Gdx.graphics.getHeight());
         engine.update(delta);
+        game.font.draw(game.batch, "EDITOR screen [MODE: " + editingMode.name()+"]", 100, Gdx.graphics.getHeight());
+        game.batch.end();
+
+        game.batch.begin();
+        //game.font.draw(game.batch, "EDITOR screen [MODE: " + editingMode.name()+"]", 100, Gdx.graphics.getHeight());
         game.batch.end();
 
         if(Gdx.input.isKeyPressed(Input.Keys.P)){
@@ -151,7 +164,7 @@ public class LevelEditorScreen implements Screen {
         toAdd = new ArrayList<SerializableObject>();
 
 
-        if(!dialogOpen&& Gdx.input.justTouched()){
+        if(!dialogOpen && Gdx.input.justTouched() && editingMode == EditingMode.CREATE){
             dialogOpen = true;
             Gdx.input.setInputProcessor(stage);
             EntityCreatorDialog edit = new EntityCreatorDialog("Create window", skin, getMousePosInGameWorld(), this) {
@@ -172,6 +185,18 @@ public class LevelEditorScreen implements Screen {
                 }
             };
             edit.show(stage);
+        }
+
+        if(!dialogOpen && Gdx.input.isKeyJustPressed(Input.Keys.M)){
+            if(editingMode == EditingMode.NONE) editingMode = EditingMode.CREATE;
+            else if(editingMode == EditingMode.CREATE) editingMode = EditingMode.SELECT;
+            else if(editingMode == EditingMode.SELECT) editingMode = EditingMode.DRAG;
+            else if(editingMode == EditingMode.DRAG) editingMode = EditingMode.NONE;
+        }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)){
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
     }
 

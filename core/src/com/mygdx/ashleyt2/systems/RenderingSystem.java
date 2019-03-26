@@ -2,6 +2,7 @@ package com.mygdx.ashleyt2.systems;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.SortedIteratingSystem;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.ashleyt2.ZComparator;
 import com.mygdx.ashleyt2.components.TextureComponent;
@@ -17,16 +18,28 @@ public class RenderingSystem extends SortedIteratingSystem {
 
     //Sprite batch
     private SpriteBatch batch;
+    private OrthographicCamera camera;
 
     private float pixels_per_meter;
 
 
     @SuppressWarnings("unchecked")
-    public RenderingSystem(SpriteBatch batch, float pixels_per_meter){
+    public RenderingSystem(SpriteBatch batch, OrthographicCamera camera, float pixels_per_meter){
         super(Family.all(TransformComponent.class,TextureComponent.class).get(), new ZComparator());
         this.batch = batch;
+        this.camera = camera;
 
         this.pixels_per_meter = pixels_per_meter;
+
+    }
+
+    @Override
+    public void update(float deltaTime){
+        camera.update();
+        batch.begin();
+        batch.setProjectionMatrix(camera.combined);
+        super.update(deltaTime);
+        batch.end();
     }
 
     @Override

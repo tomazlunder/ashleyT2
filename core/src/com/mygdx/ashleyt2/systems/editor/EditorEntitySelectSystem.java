@@ -41,7 +41,7 @@ public class EditorEntitySelectSystem extends EntitySystem {
     public void update(float deltaTime) {
         B2dBodyComponent bodyComponent;
 
-        if(Gdx.input.justTouched() && !levelEditorScreen.dialogOpen) {
+        if(Gdx.input.justTouched() && !levelEditorScreen.dialogOpen && levelEditorScreen.editingMode == LevelEditorScreen.EditingMode.SELECT) {
             for (final Entity e : entities) {
                 bodyComponent = bodyMapper.get(e);
 

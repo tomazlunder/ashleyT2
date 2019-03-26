@@ -45,7 +45,7 @@ public class PlayerSO extends SerializableObject {
         }
     }
 
-    public void addToEngine(Engine engine, World world){
+    public Entity addToEngine(Engine engine, World world){
         //create entity
         Entity entity = new Entity();
 
@@ -99,6 +99,7 @@ public class PlayerSO extends SerializableObject {
 
         //Add entity to engine
         engine.addEntity(entity);
+        return entity;
     }
 
     @Override

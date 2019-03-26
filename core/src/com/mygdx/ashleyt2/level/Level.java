@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.physics.box2d.World;
+import com.mygdx.ashleyt2.components.PlayerComponent;
 import com.mygdx.ashleyt2.components.SerializableComponent;
 import com.mygdx.ashleyt2.level.serializable_objects.SerializableObject;
 
@@ -17,6 +18,7 @@ public class Level {
     public float width;
     public float height;
     public ArrayList<SerializableObject> serializableObjects;
+    public Entity player;
 
     public Level(float width, float height, ArrayList<SerializableObject> serializableObjects){
         this.width = width;
@@ -26,7 +28,8 @@ public class Level {
 
     public void loadSerializedObjects(Engine engine, World world){
         for(SerializableObject so : serializableObjects) {
-            so.addToEngine(engine,world);
+            Entity e = so.addToEngine(engine,world);
+            //if(e.getComponents().contains(PlayerComponent.class, false))
         }
     }
 

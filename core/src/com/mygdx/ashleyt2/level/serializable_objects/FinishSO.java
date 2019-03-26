@@ -54,7 +54,7 @@ public class FinishSO extends SerializableObject {
     }
 
     @Override
-    public void addToEngine(Engine engine, World world){
+    public Entity addToEngine(Engine engine, World world){
         //create Entity
         Entity entity = new Entity();
 
@@ -97,6 +97,7 @@ public class FinishSO extends SerializableObject {
 
         //Add entity to engine
         engine.addEntity(entity);
+        return entity;
     }
 
     @Override
